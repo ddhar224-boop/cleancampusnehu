@@ -52,33 +52,35 @@ export function SiteHeader() {
   );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background">
-      <div className="container-page flex h-16 items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/95 shadow-sm backdrop-blur-xl">
+      <div className="container-page grid h-18 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 lg:flex lg:justify-between">
+        <div className="flex min-w-0 items-center gap-3">
           <Logo />
           <CampusPicker />
         </div>
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="hidden items-center gap-0.5 lg:flex">
           {NAV.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               activeProps={{ className: "text-foreground" }}
-              className="px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="rounded-lg px-2.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
               {item.label}
             </Link>
           ))}
         </nav>
         <div className="hidden items-center gap-2 lg:flex">{accountButtons}</div>
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           type="button"
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
-          className="rounded-md p-2 text-foreground lg:hidden"
+          className="shrink-0 lg:hidden"
         >
           {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
+        </Button>
       </div>
       {open ? (
         <div className="border-t border-border bg-background lg:hidden">

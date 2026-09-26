@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useNavigate } from "@tanstack/react-router";
-import { MessageCircle, Shirt, X } from "lucide-react";
+import { Bot, MessageCircle, Shirt, X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -31,8 +31,8 @@ export function ChatWidget() {
     <>
       {open && <ChatPanel onClose={() => setOpen(false)} />}
       {!open && (
-        <Button onClick={() => setOpen(true)} className="fixed bottom-5 right-5 z-50 h-12 rounded-full px-5 shadow-lg" aria-label="Open CampusClean chat">
-          <MessageCircle className="mr-2 h-5 w-5" /> Ask CampusClean
+        <Button onClick={() => setOpen(true)} className="fixed bottom-5 right-5 z-50 h-14 rounded-2xl border-2 border-primary-foreground/20 px-5 shadow-lift" aria-label="Open CampusClean chat">
+          <MessageCircle className="mr-1 h-5 w-5" /> Ask CampusClean
         </Button>
       )}
     </>
@@ -77,20 +77,20 @@ function ChatPanel({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="fixed bottom-0 right-0 z-50 flex h-[min(620px,100dvh)] w-full flex-col border border-border bg-background shadow-2xl sm:bottom-5 sm:right-5 sm:w-[400px] sm:rounded-2xl">
-      <div className="flex items-center gap-3 border-b border-border bg-ink px-4 py-3 text-ink-foreground sm:rounded-t-2xl">
+    <div className="fixed bottom-0 right-0 z-50 flex h-[min(660px,100dvh)] w-full flex-col border border-border bg-background shadow-lift sm:bottom-5 sm:right-5 sm:w-[420px] sm:rounded-3xl">
+      <div className="flex items-center gap-3 border-b-4 border-mint bg-ink px-5 py-4 text-ink-foreground sm:rounded-t-3xl">
         <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground"><Shirt className="h-5 w-5" /></span>
         <div className="flex-1">
-          <p className="font-display text-sm font-semibold">CampusClean helper</p>
+          <p className="font-display text-base font-bold">CampusClean helper</p>
           <p className="text-xs opacity-70">Prices, orders and bookings. Chat is not saved.</p>
         </div>
-        <button onClick={onClose} aria-label="Close chat" className="rounded p-1 hover:bg-white/10"><X className="h-5 w-5" /></button>
+        <Button onClick={onClose} aria-label="Close chat" variant="ghost" size="icon-sm" className="text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground"><X className="h-5 w-5" /></Button>
       </div>
 
       <Conversation className="flex-1">
         <ConversationContent>
           {messages.length === 0 ? (
-            <ConversationEmptyState title="Kya help chahiye?" description="Ask about prices, check your orders, or tell me what to pick up.">
+            <ConversationEmptyState icon={<Bot className="size-6" />} title="Kya help chahiye?" description="Ask about prices, check your orders, or tell me what to pick up.">
               <div className="mt-4 grid gap-2">
                 <p className="font-display font-semibold">Kya help chahiye?</p>
                 <p className="text-sm text-muted-foreground">Ask about prices, check your orders, or tell me what to pick up.</p>
