@@ -212,7 +212,7 @@ function Home() {
         <div className="flex flex-col justify-between rounded-2xl bg-ink p-8 text-ink-foreground">
           <div>
             <Search className="size-6 text-accent" />
-            <h2 className="mt-4 text-2xl font-bold">Kapde kahan tak pahunche?</h2>
+            <h2 className="mt-4 text-2xl font-bold">Track Your Order</h2>
             <p className="mt-2 text-sm text-ink-foreground/70">Enter your order ID to see its current stage.</p>
           </div>
           <form
