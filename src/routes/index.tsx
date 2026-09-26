@@ -26,6 +26,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { STEPS, FAQS, BRAND } from "@/lib/campusclean";
 import { servicesQuery, plansQuery, CATEGORY_LABELS } from "@/lib/catalog";
 import { rupees } from "@/lib/auth";
+import { WaitlistForm } from "@/components/WaitlistForm";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -255,10 +256,10 @@ function Home() {
         </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: IdCard, t: "NEHU Points Card", b: "Pay with your student ID like a metro card. Top up once, tap to pay for laundry across campus, no cash needed." },
-            { icon: UtensilsCrossed, t: "Tiffin services", b: "Daily home-style meals from verified campus kitchens, delivered to your hostel on a plan." },
-            { icon: Building2, t: "PG and hostel rental", b: "Verified PG and room listings near campus, with real photos, real rents and no broker runaround." },
-            { icon: Backpack, t: "Backpackers", b: "Laundry and travel help for students passing through Tura and Shillong, no hostel address needed." },
+            { icon: IdCard, t: "NEHU Points Card", b: "Pay with your student ID like a metro card. Top up once, tap to pay for laundry across campus, no cash needed.", waitlist: "nehu_points" },
+            { icon: UtensilsCrossed, t: "Tiffin services", b: "Daily home-style meals from verified campus kitchens, delivered to your hostel on a plan.", waitlist: "tiffin" },
+            { icon: Building2, t: "PG and hostel rental", b: "Verified PG and room listings near campus, with real photos, real rents and no broker runaround.", waitlist: "pg_rental" },
+            { icon: Backpack, t: "Backpackers", b: "Laundry and travel help for students passing through Tura and Shillong, no hostel address needed.", waitlist: "backpackers" },
             { icon: Wallet, t: "Student wallet", b: "Add money once and pay for pickups from your balance, no cash counting at the door." },
             { icon: Gift, t: "Rewards and referrals", b: "Points on every order and a share code that gives you and your friend a discount." },
             { icon: Bell, t: "In-app notifications", b: "A message the moment your order moves, without opening the app to check." },
@@ -275,6 +276,11 @@ function Home() {
               </div>
               <h3 className="mt-4 font-bold">{c.t}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{c.b}</p>
+              {c.waitlist && (
+                <div className="mt-auto pt-2">
+                  <WaitlistForm service={c.waitlist} serviceLabel={c.t} />
+                </div>
+              )}
             </div>
           ))}
         </div>

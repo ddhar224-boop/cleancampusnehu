@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Mail, MapPin, Clock } from "lucide-react";
+import { Mail, MapPin, Clock, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,7 +63,8 @@ function Contact() {
         </div>
         <ul className="mt-10 grid gap-4 text-sm">
           <li className="flex gap-3"><Mail className="size-5 text-accent" />{BRAND.email}</li>
-          <li className="flex gap-3"><MapPin className="size-5 text-accent" />{BRAND.launchCampus}, Meghalaya</li>
+          <li className="flex gap-3"><Phone className="size-5 text-accent" />{BRAND.phone}</li>
+          <li className="flex gap-3"><MapPin className="size-5 text-accent" />{BRAND.launchCampus} (MBA), Meghalaya</li>
           <li className="flex gap-3"><Clock className="size-5 text-accent" />Pickups 8 am to 8 pm, every day</li>
         </ul>
       </div>
