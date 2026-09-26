@@ -4,12 +4,16 @@ import { useQuery } from "@tanstack/react-query";
 import {
   ArrowRight,
   BedDouble,
+  Bell,
   CalendarDays,
   Clock,
+  CreditCard,
   Footprints,
+  Gift,
   Search,
   Shirt,
   Sparkles,
+  Wallet,
   Wind,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -231,6 +235,41 @@ function Home() {
             <p className={`mt-3 text-sm leading-relaxed ${i === 1 ? "text-primary-foreground/85" : "text-muted-foreground"}`}>{c.b}</p>
           </div>
         ))}
+      </section>
+
+      {/* Coming soon */}
+      <section className="mt-20">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-widest text-accent">Coming soon</p>
+            <h2 className="mt-2 text-3xl font-bold sm:text-4xl">Aur bhi aa raha hai</h2>
+            <p className="mt-2 text-muted-foreground">
+              We are building these next. Nothing here is live yet, so do not wait on any of it for
+              your laundry.
+            </p>
+          </div>
+        </div>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { icon: Wallet, t: "Student wallet", b: "Add money once and pay for pickups from your balance, no cash counting at the door." },
+            { icon: Gift, t: "Rewards and referrals", b: "Points on every order and a share code that gives you and your friend a discount." },
+            { icon: Bell, t: "In-app notifications", b: "A message the moment your order moves, without opening the app to check." },
+            { icon: CreditCard, t: "Online payment", b: "Pay by card or UPI inside the app instead of cash on delivery." },
+          ].map((c) => (
+            <div key={c.t} className="bento flex flex-col">
+              <div className="flex items-center justify-between">
+                <span className="flex size-10 items-center justify-center rounded-full bg-secondary">
+                  <c.icon className="size-5 text-primary" />
+                </span>
+                <span className="rounded-full border border-border px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  Coming soon
+                </span>
+              </div>
+              <h3 className="mt-4 font-bold">{c.t}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{c.b}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* FAQ */}
