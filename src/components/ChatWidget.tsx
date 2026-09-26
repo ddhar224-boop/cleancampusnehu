@@ -10,7 +10,6 @@ import { Conversation, ConversationContent, ConversationEmptyState, Conversation
 import { Message, MessageContent, MessageResponse } from "@/components/ai-elements/message";
 import { PromptInput, PromptInputBody, PromptInputFooter, PromptInputSubmit, PromptInputTextarea } from "@/components/ai-elements/prompt-input";
 import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from "@/components/ai-elements/tool";
-import { Shimmer } from "@/components/ai-elements/shimmer";
 import { rupees } from "@/lib/auth";
 
 export const CHAT_PLAN_KEY = "campusclean-chat-plan";
@@ -103,7 +102,7 @@ function ChatPanel({ onClose }: { onClose: () => void }) {
           ) : (
             messages.map((m) => <ChatMessage key={m.id} m={m} onBook={openBooking} />)
           )}
-          {status === "submitted" && <Shimmer className="text-sm">Thinking...</Shimmer>}
+          {status === "submitted" && <p className="animate-pulse text-sm text-muted-foreground">Thinking...</p>}
         </ConversationContent>
         <ConversationScrollButton />
       </Conversation>
