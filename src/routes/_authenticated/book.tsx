@@ -54,25 +54,36 @@ function Book() {
   const loc = location ?? defaultLocation;
 
   const lines = useMemo(
-    () => (services.data ?? []).filter((s) => (qty[s.id] ?? 0) > 0).map((s) => ({ ...s, q: qty[s.id] ?? 0, total: Number(s.price) * (qty[s.id] ?? 0) })),
+    () => (services.data ?? []).filter((s) => (qty[s.id] ?? 0) > 0).map((s) => ({ ...s, q: qty[s.id] ?? 0, total: Math.round(Number(s.price) * (qty[s.id] ?? 0) * 100) / 100 })),
     [services.data, qty],
   );
   const subtotal = lines.reduce((a, l) => a + l.total, 0);
   const fee = speed === "express" ? EXPRESS_FEE : 0;
 
+  const pieceItems = (services.data ?? []).filter((s) => s.unit !== "kg");
+  const kgItems = (services.data ?? []).filter((s) => s.unit === "kg");
+
   const grouped = useMemo(() => {
-    const g: Record<string, NonNullable<typeof services.data>> = {};
-    for (const s of services.data ?? []) (g[s.category] ??= []).push(s);
+    const g: Record<string, typeof pieceItems> = {};
+    for (const s of pieceItems) (g[s.category] ??= []).push(s);
     return g;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [services.data]);
 
-  function change(id: string, unit: string, delta: number) {
-    const step = unit === "kg" ? 0.5 : 1;
-    setQty((q) => ({ ...q, [id]: Math.max(0, Math.min(100, (q[id] ?? 0) + delta * step)) }));
+  function changePieces(id: string, delta: number) {
+    setQty((q) => ({ ...q, [id]: Math.max(0, Math.min(100, Math.round((q[id] ?? 0) + delta))) }));
+  }
+  function setWeight(id: string, raw: string) {
+    const n = Number(raw);
+    setQty((q) => ({ ...q, [id]: Number.isFinite(n) ? Math.max(0, Math.min(100, Math.round(n * 10) / 10)) : 0 }));
   }
 
   async function submit() {
-    if (!lines.length) { toast.error("Add at least one service"); return; }
+    if (!lines.length) { toast.error("Add at least one item"); return; }
+    for (const l of lines) {
+      if (l.unit !== "kg" && !Number.isInteger(l.q)) { toast.error(`${l.name} is priced per piece`); return; }
+      if (l.q <= 0) { toast.error(`Enter a positive amount for ${l.name}`); return; }
+    }
     if (loc.trim().length < 2) { toast.error("Enter your pickup location"); return; }
     setBusy(true);
     const { data, error } = await supabase.rpc("place_order", {
@@ -97,33 +108,61 @@ function Book() {
       <div className="grid gap-8">
         <div>
           <h1 className="text-3xl font-bold">Book a pickup</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Weights are estimates. We weigh your bag at pickup and update the bill before washing.</p>
+          <p className="mt-2 text-sm text-muted-foreground">Clothes are charged per piece. Only blankets are charged by weight, confirmed on our scale at pickup.</p>
         </div>
 
         <section>
-          <h2 className="font-semibold">1. Choose services</h2>
-          {services.isLoading ? <p className="mt-3 text-sm text-muted-foreground">Loading services...</p> : null}
+          <h2 className="font-semibold">1. Clothes and linen: price per piece</h2>
+          {services.isLoading ? <p className="mt-3 text-sm text-muted-foreground">Loading items...</p> : null}
           {Object.entries(grouped).map(([cat, list]) => (
             <div key={cat} className="mt-5">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{CATEGORY_LABELS[cat] ?? cat}</p>
               <ul className="mt-2 divide-y divide-border rounded-lg border border-border">
-                {list.map((s) => (
-                  <li key={s.id} className="flex items-center justify-between gap-4 p-3">
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium">{s.name}</p>
-                      <p className="text-xs text-muted-foreground">{rupees(s.price)} {unitLabel(s.unit)} · {s.turnaround}</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Button type="button" size="icon" variant="outline" className="size-8" aria-label={`Less ${s.name}`} onClick={() => change(s.id, s.unit, -1)}><Minus className="size-4" /></Button>
-                      <span className="w-12 text-center text-sm tabular-nums">{qty[s.id] ?? 0}{s.unit === "kg" ? " kg" : ""}</span>
-                      <Button type="button" size="icon" variant="outline" className="size-8" aria-label={`More ${s.name}`} onClick={() => change(s.id, s.unit, 1)}><Plus className="size-4" /></Button>
-                    </div>
-                  </li>
-                ))}
+                {list.map((s) => {
+                  const n = qty[s.id] ?? 0;
+                  return (
+                    <li key={s.id} className="flex items-center justify-between gap-4 p-3">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium">{s.name}</p>
+                        <p className="text-xs text-muted-foreground tabular-nums">{rupees(s.price)} × {n} = {rupees(Number(s.price) * n)}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button type="button" size="icon" variant="outline" className="size-8" aria-label={`Less ${s.name}`} onClick={() => changePieces(s.id, -1)}><Minus className="size-4" /></Button>
+                        <span className="w-8 text-center text-sm tabular-nums">{n}</span>
+                        <Button type="button" size="icon" variant="outline" className="size-8" aria-label={`More ${s.name}`} onClick={() => changePieces(s.id, 1)}><Plus className="size-4" /></Button>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
         </section>
+
+        {kgItems.length ? (
+          <section>
+            <h2 className="font-semibold">2. Blanket: price per kg</h2>
+            <ul className="mt-3 divide-y divide-border rounded-lg border-2 border-primary/30">
+              {kgItems.map((s) => {
+                const w = qty[s.id] ?? 0;
+                return (
+                  <li key={s.id} className="flex flex-wrap items-center justify-between gap-4 p-3">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium">{s.name}</p>
+                      <p className="text-xs text-muted-foreground tabular-nums">{rupees(s.price)}/kg × {w} kg = {rupees(Number(s.price) * w)}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Label htmlFor={`w-${s.id}`} className="text-xs text-muted-foreground">Weight</Label>
+                      <Input id={`w-${s.id}`} type="number" inputMode="decimal" min={0} max={100} step={0.5} value={w || ""} placeholder="0" onChange={(e) => setWeight(s.id, e.target.value)} className="h-8 w-20" />
+                      <span className="text-sm">kg</span>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="mt-2 text-xs text-muted-foreground">Estimate the weight. We weigh it at pickup and update the bill before washing.</p>
+          </section>
+        ) : null}
 
         <section className="grid gap-4">
           <h2 className="font-semibold">2. Pickup</h2>

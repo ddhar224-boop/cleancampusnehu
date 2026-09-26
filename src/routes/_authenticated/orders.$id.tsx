@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { rupees } from "@/lib/auth";
-import { STATUS_FLOW, STATUS_LABELS, unitLabel } from "@/lib/catalog";
+import { STATUS_FLOW, STATUS_LABELS, lineText } from "@/lib/catalog";
 
 export const Route = createFileRoute("/_authenticated/orders/$id")({
   head: () => ({
