@@ -158,7 +158,7 @@ export const FAQS = [
   },
   {
     q: "What does it cost?",
-    a: "Wash and fold starts at ₹60 per kg. Pickup and standard delivery are free. You see the full bill before you confirm, and it is adjusted only if the weight on our scale differs from your estimate.",
+    a: "Clothes are charged per piece, from ₹20 for a T-shirt. Only blankets are charged by weight. Pickup and standard delivery are free. You see the full bill before you confirm, and it changes only if the piece count or blanket weight at pickup differs from your booking.",
   },
   {
     q: "Do you offer plans for regular laundry?",

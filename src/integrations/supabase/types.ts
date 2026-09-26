@@ -302,7 +302,7 @@ export type Database = {
           slug: string
           sort_order?: number
           turnaround?: string
-          unit: string
+          unit?: string
         }
         Update: {
           active?: boolean
