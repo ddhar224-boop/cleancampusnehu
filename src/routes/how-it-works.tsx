@@ -73,7 +73,7 @@ function HowItWorks() {
             <Link to="/book">Book your laundry</Link>
           </Button>
           <Button asChild variant="outline" className="rounded-full">
-            <Link to="/pricing">See pricing</Link>
+            <Link to="/services">See prices</Link>
           </Button>
         </div>
       </Section>

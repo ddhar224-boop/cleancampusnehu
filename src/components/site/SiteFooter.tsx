@@ -25,7 +25,7 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
-              <Link to="/pricing" className="hover:text-ink-foreground">
+              <Link to="/services" className="hover:text-ink-foreground">
                 Pricing
               </Link>
             </li>
@@ -56,14 +56,24 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>{BRAND.email}</li>
+            <li>
+              <Link to="/privacy" className="hover:text-ink-foreground">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link to="/terms" className="hover:text-ink-foreground">
+                Terms and Conditions
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
 
-      <div className="border-t border-white/10">
+      <div className="border-t border-ink-foreground/10">
         <div className="container-page flex flex-col gap-2 py-5 text-xs text-ink-foreground/50 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} CampusClean. All rights reserved.</p>
-          <p>Indicative pricing shown until campus rates are confirmed.</p>
+          <p>Operating at NEHU Tura Campus, Meghalaya.</p>
         </div>
       </div>
     </footer>
