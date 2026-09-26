@@ -14,16 +14,400 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      order_events: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          note: string
+          order_id: string
+          status: Database["public"]["Enums"]["order_status"]
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note?: string
+          order_id: string
+          status: Database["public"]["Enums"]["order_status"]
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note?: string
+          order_id?: string
+          status?: Database["public"]["Enums"]["order_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_events_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_items: {
+        Row: {
+          id: string
+          line_total: number
+          order_id: string
+          quantity: number
+          service_id: string
+          service_name: string
+          unit: string
+          unit_price: number
+        }
+        Insert: {
+          id?: string
+          line_total: number
+          order_id: string
+          quantity: number
+          service_id: string
+          service_name: string
+          unit: string
+          unit_price: number
+        }
+        Update: {
+          id?: string
+          line_total?: number
+          order_id?: string
+          quantity?: number
+          service_id?: string
+          service_name?: string
+          unit?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          code: string
+          created_at: string
+          delivery_speed: string
+          express_fee: number
+          id: string
+          notes: string
+          payment_method: string
+          payment_status: string
+          pickup_date: string
+          pickup_location: string
+          pickup_slot: string
+          status: Database["public"]["Enums"]["order_status"]
+          subtotal: number
+          total: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          code?: string
+          created_at?: string
+          delivery_speed?: string
+          express_fee?: number
+          id?: string
+          notes?: string
+          payment_method?: string
+          payment_status?: string
+          pickup_date: string
+          pickup_location: string
+          pickup_slot: string
+          status?: Database["public"]["Enums"]["order_status"]
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          delivery_speed?: string
+          express_fee?: number
+          id?: string
+          notes?: string
+          payment_method?: string
+          payment_status?: string
+          pickup_date?: string
+          pickup_location?: string
+          pickup_slot?: string
+          status?: Database["public"]["Enums"]["order_status"]
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      plans: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string
+          features: string[]
+          id: string
+          kg_allowance: number
+          name: string
+          period_days: number
+          pickups_included: number
+          price: number
+          slug: string
+          sort_order: number
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          features?: string[]
+          id?: string
+          kg_allowance?: number
+          name: string
+          period_days: number
+          pickups_included?: number
+          price: number
+          slug: string
+          sort_order?: number
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          features?: string[]
+          id?: string
+          kg_allowance?: number
+          name?: string
+          period_days?: number
+          pickups_included?: number
+          price?: number
+          slug?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          campus: string
+          created_at: string
+          full_name: string
+          hostel: string
+          id: string
+          institution_id: string
+          member_type: string
+          mobile: string
+          room: string
+          university: string
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          campus?: string
+          created_at?: string
+          full_name?: string
+          hostel?: string
+          id: string
+          institution_id?: string
+          member_type?: string
+          mobile?: string
+          room?: string
+          university?: string
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          campus?: string
+          created_at?: string
+          full_name?: string
+          hostel?: string
+          id?: string
+          institution_id?: string
+          member_type?: string
+          mobile?: string
+          room?: string
+          university?: string
+          updated_at?: string
+          verification_status?: string
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          description: string
+          id: string
+          name: string
+          price: number
+          slug: string
+          sort_order: number
+          turnaround: string
+          unit: string
+        }
+        Insert: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          name: string
+          price: number
+          slug: string
+          sort_order?: number
+          turnaround?: string
+          unit: string
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          name?: string
+          price?: number
+          slug?: string
+          sort_order?: number
+          turnaround?: string
+          unit?: string
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          created_at: string
+          ends_on: string | null
+          id: string
+          payment_method: string
+          payment_status: string
+          plan_id: string
+          price: number
+          starts_on: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          ends_on?: string | null
+          id?: string
+          payment_method?: string
+          payment_status?: string
+          plan_id: string
+          price: number
+          starts_on?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          ends_on?: string | null
+          id?: string
+          payment_method?: string
+          payment_status?: string
+          plan_id?: string
+          price?: number
+          starts_on?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      cancel_my_order: { Args: { _id: string }; Returns: undefined }
+      cancel_my_subscription: { Args: { _id: string }; Returns: undefined }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      place_order: {
+        Args: {
+          _delivery_speed: string
+          _items: Json
+          _notes: string
+          _payment_method: string
+          _pickup_date: string
+          _pickup_location: string
+          _pickup_slot: string
+        }
+        Returns: {
+          code: string
+          id: string
+        }[]
+      }
+      track_order: {
+        Args: { _code: string }
+        Returns: {
+          code: string
+          pickup_date: string
+          status: Database["public"]["Enums"]["order_status"]
+          updated_at: string
+        }[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "staff" | "user"
+      order_status:
+        | "placed"
+        | "pickup_scheduled"
+        | "picked_up"
+        | "received"
+        | "washing"
+        | "drying"
+        | "ironing"
+        | "quality_check"
+        | "packed"
+        | "out_for_delivery"
+        | "delivered"
+        | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +534,22 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "staff", "user"],
+      order_status: [
+        "placed",
+        "pickup_scheduled",
+        "picked_up",
+        "received",
+        "washing",
+        "drying",
+        "ironing",
+        "quality_check",
+        "packed",
+        "out_for_delivery",
+        "delivered",
+        "cancelled",
+      ],
+    },
   },
 } as const
