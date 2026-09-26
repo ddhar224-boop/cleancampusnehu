@@ -54,7 +54,7 @@ function Book() {
   const loc = location ?? defaultLocation;
 
   const lines = useMemo(
-    () => (services.data ?? []).filter((s) => (qty[s.id] ?? 0) > 0).map((s) => ({ ...s, q: qty[s.id], total: Number(s.price) * qty[s.id] })),
+    () => (services.data ?? []).filter((s) => (qty[s.id] ?? 0) > 0).map((s) => ({ ...s, q: qty[s.id] ?? 0, total: Number(s.price) * (qty[s.id] ?? 0) })),
     [services.data, qty],
   );
   const subtotal = lines.reduce((a, l) => a + l.total, 0);

@@ -104,7 +104,7 @@ export const STEPS = [
   },
   {
     title: "We collect from your hostel",
-    body: "Our pickup staff scans your order QR at the door, so nothing gets mixed up.",
+    body: "Our staff collect your bag and tag it with your order ID, so nothing gets mixed up.",
   },
   {
     title: "Washed, dried, pressed",
@@ -138,7 +138,7 @@ export const FAQS = [
   },
   {
     q: "Do I need a university email address?",
-    a: "No. You register with your mobile number and your Student or Staff ID. Our team verifies your ID before your first order, and you can optionally upload a photo of your ID card to speed it up.",
+    a: "No. You register with your mobile number and your Student or Staff ID. Our team verifies your ID before your first pickup.",
   },
   {
     q: "How is my laundry kept separate from everyone else's?",

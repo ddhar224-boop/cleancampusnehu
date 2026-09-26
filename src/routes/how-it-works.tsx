@@ -49,7 +49,7 @@ function HowItWorks() {
         </ol>
       </Section>
 
-      <Section className="surface-gradient">
+      <Section className="bg-secondary">
         <SectionHeading
           eyebrow="Order Stages"
           title="Twelve stages, all recorded"

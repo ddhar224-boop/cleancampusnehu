@@ -60,7 +60,7 @@ function AboutPage() {
         </div>
       </Section>
 
-      <Section className="surface-gradient">
+      <Section className="bg-secondary">
         <SectionHeading
           eyebrow="Contact"
           title="Talk to us"
