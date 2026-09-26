@@ -8,6 +8,7 @@ export const BRAND = {
   name: "CampusClean",
   tagline: "Clean Clothes. Less Hassle. Campus Life Made Easy.",
   marketingTagline: "Your Campus Laundry, Reimagined.",
+  hinglish: "Dhulai hum karenge, chill aap karo.",
   launchCampus: "NEHU Tura Campus",
   email: "hello@campusclean.in",
   phone: "",
