@@ -208,26 +208,73 @@ function PricesPanel() {
       return data;
     },
   });
-  async function save(id: string, patch: { price?: number; active?: boolean }) {
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [unit, setUnit] = useState<"piece" | "kg">("piece");
+  const [category, setCategory] = useState("clothes");
+
+  async function save(id: string, patch: { price?: number; active?: boolean; name?: string; unit?: string }) {
+    if (patch.unit === "kg" && !confirm("Only blankets should be priced per kg. Charge this item by weight?")) return;
     const { error } = await supabase.from("services").update(patch).eq("id", id);
     if (error) { toast.error(error.message); return; }
     toast.success("Saved");
     qc.invalidateQueries();
   }
+  async function remove(id: string, label: string) {
+    if (!confirm(`Delete ${label}?`)) return;
+    const { error } = await supabase.from("services").delete().eq("id", id);
+    if (error) { toast.error("This item is on past orders, so it cannot be deleted. Hide it instead."); return; }
+    toast.success("Deleted");
+    qc.invalidateQueries();
+  }
+  async function add() {
+    const p = Number(price);
+    if (name.trim().length < 2 || !(p > 0)) { toast.error("Enter a name and a price above 0"); return; }
+    if (unit === "kg" && !confirm("Only blankets should be priced per kg. Continue?")) return;
+    const slug = `${name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`;
+    const max = Math.max(0, ...(q.data ?? []).map((s) => s.sort_order));
+    const { error } = await supabase.from("services").insert({ slug, name: name.trim(), price: p, unit, category, sort_order: max + 1 });
+    if (error) { toast.error(error.message); return; }
+    setName(""); setPrice(""); setUnit("piece");
+    toast.success("Item added");
+    qc.invalidateQueries();
+  }
+
+  const sel = "h-8 rounded-md border border-input bg-background px-2 text-sm";
   return (
-    <ul className="mt-4 divide-y divide-border rounded-lg border border-border">
-      {q.data?.map((s) => (
-        <li key={s.id} className="flex flex-wrap items-center justify-between gap-3 p-3 text-sm">
-          <p className="font-medium">{s.name} <span className="text-xs text-muted-foreground">{unitLabel(s.unit)}</span></p>
-          <div className="flex items-center gap-2">
+    <div className="mt-4 grid gap-4">
+      <div className="flex flex-wrap items-end gap-2 rounded-lg border border-border p-3">
+        <Input placeholder="Item name" value={name} onChange={(e) => setName(e.target.value)} className="h-8 w-44" maxLength={80} />
+        <Input placeholder="Price" type="number" min={1} value={price} onChange={(e) => setPrice(e.target.value)} className="h-8 w-24" />
+        <select value={unit} onChange={(e) => setUnit(e.target.value as "piece" | "kg")} className={sel} aria-label="Pricing unit">
+          <option value="piece">per piece</option><option value="kg">per kg</option>
+        </select>
+        <select value={category} onChange={(e) => setCategory(e.target.value)} className={sel} aria-label="Category">
+          {Object.entries(CATEGORY_LABELS).filter(([k]) => k !== "laundry").map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+        </select>
+        <Button size="sm" onClick={add}>Add item</Button>
+      </div>
+      <ul className="divide-y divide-border rounded-lg border border-border">
+        {q.data?.map((s) => (
+          <li key={s.id} className={`flex flex-wrap items-center justify-between gap-3 p-3 text-sm ${s.active ? "" : "opacity-60"}`}>
             <Input
-              type="number" min={0} step="1" defaultValue={Number(s.price)} className="h-8 w-24"
-              onBlur={(e) => { const v = Number(e.target.value); if (v >= 0 && v !== Number(s.price)) save(s.id, { price: v }); }}
+              defaultValue={s.name} className="h-8 w-56" maxLength={80} aria-label="Item name"
+              onBlur={(e) => { const v = e.target.value.trim(); if (v.length >= 2 && v !== s.name) save(s.id, { name: v }); }}
             />
-            <Button size="sm" variant="outline" onClick={() => save(s.id, { active: !s.active })}>{s.active ? "Hide" : "Show"}</Button>
-          </div>
-        </li>
-      ))}
-    </ul>
+            <div className="flex flex-wrap items-center gap-2">
+              <Input
+                type="number" min={0} step="1" defaultValue={Number(s.price)} className="h-8 w-24" aria-label="Price"
+                onBlur={(e) => { const v = Number(e.target.value); if (v >= 0 && v !== Number(s.price)) save(s.id, { price: v }); }}
+              />
+              <select value={s.unit === "kg" ? "kg" : "piece"} onChange={(e) => save(s.id, { unit: e.target.value })} className={sel} aria-label="Pricing unit">
+                <option value="piece">per piece</option><option value="kg">per kg</option>
+              </select>
+              <Button size="sm" variant="outline" onClick={() => save(s.id, { active: !s.active })}>{s.active ? "Hide" : "Show"}</Button>
+              <Button size="sm" variant="ghost" onClick={() => remove(s.id, s.name)}>Delete</Button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
