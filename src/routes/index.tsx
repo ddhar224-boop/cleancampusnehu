@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "CampusClean | Dhulai hum karenge, chill aap karo" },
-      { name: "description", content: "Laundry pickup from your hostel at NEHU Tura. Washed, ironed and delivered back in 48 hours, from ₹60 per kg. Pay cash or UPI on delivery." },
+      { name: "description", content: "Laundry pickup from your hostel at NEHU Tura. Washed, ironed and delivered back in 48 hours, from ₹20 per piece. Pay cash or UPI on delivery." },
       { property: "og:title", content: "CampusClean | Dhulai hum karenge, chill aap karo" },
       { property: "og:description", content: "Hostel pickup, washing, ironing and delivery for NEHU Tura students and staff." },
       { property: "og:type", content: "website" },
@@ -103,7 +103,7 @@ function Home() {
 
         <Link to="/services" className="bento-hover flex flex-col justify-center rounded-2xl bg-primary p-6 text-primary-foreground transition-transform">
           <p className="text-sm text-primary-foreground/80">Starts from</p>
-          <p className="font-display text-3xl font-bold">₹60<span className="text-sm font-semibold">/kg</span></p>
+          <p className="font-display text-3xl font-bold">₹20<span className="text-sm font-semibold">/piece</span></p>
           <p className="mt-2 text-xs">{services.data?.length ?? 15} services, see all prices</p>
         </Link>
 

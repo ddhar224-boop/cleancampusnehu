@@ -28,14 +28,27 @@ export const plansQuery = queryOptions({
 });
 
 export const CATEGORY_LABELS: Record<string, string> = {
+  clothes: "Clothes, price per piece",
+  home: "Household and linen, price per piece",
+  weight: "Blanket, price per kg",
   laundry: "Wash and fold",
   ironing: "Ironing",
   dry_clean: "Dry cleaning",
-  home: "Bedding and home",
   specialty: "Special care",
 };
 
-export const unitLabel = (u: string) => (u === "kg" ? "per kg" : u === "item" ? "per item" : "flat");
+export const unitLabel = (u: string) => (u === "kg" ? "per kg" : u === "fixed" ? "flat" : "per piece");
+
+/** "2 pcs" / "1 pc" / "2.5 kg" */
+export const qtyLabel = (q: number | string, unit: string) => {
+  const n = Number(q);
+  if (unit === "kg") return `${n} kg`;
+  return `${n} ${n === 1 ? "pc" : "pcs"}`;
+};
+
+/** "Shirt: 2 pcs × ₹25 = ₹50" style line, shared by booking, order detail and admin. */
+export const lineText = (qty: number | string, unit: string, price: number | string, fmt: (n: number | string) => string) =>
+  `${qtyLabel(qty, unit)} × ${fmt(price)}${unit === "kg" ? "/kg" : ""}`;
 
 export const STATUS_LABELS: Record<string, string> = {
   placed: "Order placed",

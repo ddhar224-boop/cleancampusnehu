@@ -96,7 +96,7 @@ function OrderDetail() {
             <dl className="mt-4 space-y-2 text-sm">
               {o.order_items.map((it) => (
                 <div key={it.id} className="flex justify-between gap-3">
-                  <dt className="text-muted-foreground">{it.service_name} × {Number(it.quantity)} <span className="text-xs">({rupees(it.unit_price)} {unitLabel(it.unit)})</span></dt>
+                  <dt className="text-muted-foreground">{it.service_name} <span className="text-xs">{lineText(it.quantity, it.unit, it.unit_price, rupees)}</span></dt>
                   <dd>{rupees(it.line_total)}</dd>
                 </div>
               ))}
