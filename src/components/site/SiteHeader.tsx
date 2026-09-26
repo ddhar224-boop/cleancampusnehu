@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
+import { CampusPicker } from "./CampusPicker";
 import { useSession } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -53,7 +54,10 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background">
       <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Logo />
+        <div className="flex items-center gap-3">
+          <Logo />
+          <CampusPicker />
+        </div>
         <nav className="hidden items-center gap-1 lg:flex">
           {NAV.map((item) => (
             <Link
