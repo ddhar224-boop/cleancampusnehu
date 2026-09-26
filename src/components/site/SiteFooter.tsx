@@ -26,7 +26,7 @@ export function SiteFooter() {
             </li>
             <li>
               <Link to="/services" className="hover:text-ink-foreground">
-                Pricing
+                Prices
               </Link>
             </li>
             <li>
