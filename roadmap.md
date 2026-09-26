@@ -1,9 +1,10 @@
 # Roadmap
-- [ ] Remove gradients, AI photos, em dashes, fake testimonials from marketing site
-- [ ] Privacy Policy + Terms pages
-- [ ] Lovable Cloud: auth (email/password), profiles (mobile, student/staff ID, campus)
-- [ ] Services + subscription plans from database
-- [ ] Booking flow creating real orders; My Orders; order details; tracking by order ID
-- [ ] Subscriptions (subscribe to plan, pay on delivery until gateway keys)
-- [ ] Admin: manage orders/status, services
-- [ ] Launch blockers (user): custom domain, remove badge (paid plan), payment gateway keys
+- [x] Remove gradients, AI photos, em dashes, fake testimonials from marketing site
+- [x] Privacy Policy + Terms pages
+- [x] Accounts: email/password + Google, profiles (mobile, student/staff ID, campus)
+- [x] Services + plans from database
+- [x] Booking creates real orders; My Orders; order details; public tracking by order ID
+- [x] Plans: request, cancel, admin activates on payment
+- [x] Operations page: order status, payments, plan activation, member verification, prices
+- [ ] Grant first admin (blocked: owner must sign up, then tell us their email)
+- [ ] Launch blockers (owner): custom domain, remove Lovable badge (paid plan), online payment keys
