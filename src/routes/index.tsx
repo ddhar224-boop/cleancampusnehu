@@ -3,16 +3,20 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowRight,
+  Backpack,
   BedDouble,
   Bell,
+  Building2,
   CalendarDays,
   Clock,
   CreditCard,
   Footprints,
   Gift,
+  IdCard,
   Search,
   Shirt,
   Sparkles,
+  UtensilsCrossed,
   Wallet,
   Wind,
 } from "lucide-react";
