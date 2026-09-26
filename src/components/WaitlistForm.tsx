@@ -38,11 +38,11 @@ export function WaitlistForm({ service, serviceLabel }: { service: string; servi
     e.preventDefault();
     const raw = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
     const parsed = schema.safeParse({
-      name: raw.name ?? "",
-      contact: raw.contact ?? "",
+      name: raw["name"] ?? "",
+      contact: raw["contact"] ?? "",
       hostel,
-      pickup_time: raw.pickup_time ?? "",
-      delivery_date: raw.delivery_date ?? "",
+      pickup_time: raw["pickup_time"] ?? "",
+      delivery_date: raw["delivery_date"] ?? "",
     });
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "Check the form");
