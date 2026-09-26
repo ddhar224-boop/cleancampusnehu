@@ -49,7 +49,7 @@ function AboutPage() {
             },
             {
               t: "How we handle trust",
-              b: "Every order is QR-tracked, every status change is recorded with the staff member who made it, and every loss or damage claim is reviewed and closed with a documented outcome.",
+              b: "Every order has its own ID, every status change is recorded with a time, and every loss or damage report is reviewed by a manager.",
             },
           ].map((x) => (
             <div key={x.t} className="rounded-2xl border border-border bg-card p-6 shadow-soft">

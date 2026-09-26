@@ -117,17 +117,16 @@ export const STEPS = [
 ];
 
 export const TRACK_STAGES = [
-  "Order Placed",
-  "Pickup Scheduled",
-  "Picked Up",
-  "Received",
-  "Sorting",
+  "Order placed",
+  "Pickup scheduled",
+  "Picked up",
+  "Received at facility",
   "Washing",
   "Drying",
   "Ironing",
-  "Quality Check",
+  "Quality check",
   "Packed",
-  "Out for Delivery",
+  "Out for delivery",
   "Delivered",
 ];
 

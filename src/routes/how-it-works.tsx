@@ -10,12 +10,12 @@ export const Route = createFileRoute("/how-it-works")({
       {
         name: "description",
         content:
-          "Book a slot, we collect from your hostel, wash and press at our facility, and deliver folded laundry back to your door, tracked across 12 stages.",
+          "Book a slot, we collect from your hostel, wash and press at our facility, and deliver folded laundry back to your door, tracked at every stage.",
       },
       { property: "og:title", content: "How CampusClean Works" },
       {
         property: "og:description",
-        content: "From hostel pickup to doorstep delivery, with QR tracking at every stage.",
+        content: "From hostel pickup to doorstep delivery, with tracking at every stage.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
