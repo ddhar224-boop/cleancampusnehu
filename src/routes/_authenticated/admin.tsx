@@ -53,7 +53,7 @@ function Admin() {
           {isAdmin ? <TabsTrigger value="members">Members</TabsTrigger> : null}
           {isAdmin ? <TabsTrigger value="prices">Prices</TabsTrigger> : null}
           {isAdmin ? <TabsTrigger value="hostels">Hostels</TabsTrigger> : null}
-          {isAdmin ? <TabsTrigger value="waitlist">Waitlist</TabsTrigger> : null}
+          {isAdmin ? <TabsTrigger value="hostel-pickup">Hostel Pickup</TabsTrigger> : null}
         </TabsList>
         <TabsContent value="orders"><OrdersPanel /></TabsContent>
         {isAdmin ? <TabsContent value="subs"><SubsPanel /></TabsContent> : null}
