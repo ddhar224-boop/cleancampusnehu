@@ -62,7 +62,7 @@ function Home() {
           <div>
             <p className="text-sm font-medium text-ink-foreground/60">Laundry pickup at {BRAND.launchCampus}</p>
             <h1 className="mt-4 max-w-2xl text-4xl font-extrabold leading-[1.08] sm:text-6xl">
-              Dhulai hum karenge, <span className="text-accent">chill</span> aap karo.
+              <span className="text-primary-soft">Dhulai</span> hum karenge, <span className="text-accent">chill</span> aap karo.
             </h1>
           </div>
           <div className="mt-8 flex flex-wrap items-center gap-4">
