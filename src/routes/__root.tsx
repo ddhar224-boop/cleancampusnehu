@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Toaster } from "@/components/ui/sonner";
+import { ChatWidget } from "@/components/ChatWidget";
 import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
@@ -148,6 +149,7 @@ function RootComponent() {
         </main>
         <SiteFooter />
       </div>
+      <ChatWidget />
       <Toaster />
     </QueryClientProvider>
   );

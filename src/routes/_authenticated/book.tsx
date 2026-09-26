@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { CHAT_PLAN_KEY } from "@/components/ChatWidget";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -75,6 +76,16 @@ function Book() {
     setSpeed(p.delivery_speed);
     if (p.notes) setNotes(p.notes);
   }
+
+  // A pickup request prepared by the chat helper is applied once the price list has loaded.
+  useEffect(() => {
+    if (!services.data) return;
+    const raw = sessionStorage.getItem(CHAT_PLAN_KEY);
+    if (!raw) return;
+    sessionStorage.removeItem(CHAT_PLAN_KEY);
+    try { applyPlan(JSON.parse(raw)); toast.success("Filled in from your chat. Check and confirm."); } catch { /* ignore bad data */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [services.data]);
 
   const lines = useMemo(
     () => (services.data ?? []).filter((s) => (qty[s.id] ?? 0) > 0).map((s) => ({ ...s, q: qty[s.id] ?? 0, total: Math.round(Number(s.price) * (qty[s.id] ?? 0) * 100) / 100 })),
