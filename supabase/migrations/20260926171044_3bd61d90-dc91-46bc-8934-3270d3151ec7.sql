@@ -1,0 +1,14 @@
+DROP POLICY "Anyone reads active services" ON public.services;
+CREATE POLICY "Public reads active services" ON public.services FOR SELECT TO anon, authenticated USING (active);
+CREATE POLICY "Admins read all services" ON public.services FOR SELECT TO authenticated USING (public.has_role(auth.uid(),'admin'));
+DROP POLICY "Anyone reads active plans" ON public.plans;
+CREATE POLICY "Public reads active plans" ON public.plans FOR SELECT TO anon, authenticated USING (active);
+CREATE POLICY "Admins read all plans" ON public.plans FOR SELECT TO authenticated USING (public.has_role(auth.uid(),'admin'));
+DROP POLICY "Admins manage services" ON public.services;
+CREATE POLICY "Admins insert services" ON public.services FOR INSERT TO authenticated WITH CHECK (public.has_role(auth.uid(),'admin'));
+CREATE POLICY "Admins update services" ON public.services FOR UPDATE TO authenticated USING (public.has_role(auth.uid(),'admin'));
+CREATE POLICY "Admins delete services" ON public.services FOR DELETE TO authenticated USING (public.has_role(auth.uid(),'admin'));
+DROP POLICY "Admins manage plans" ON public.plans;
+CREATE POLICY "Admins insert plans" ON public.plans FOR INSERT TO authenticated WITH CHECK (public.has_role(auth.uid(),'admin'));
+CREATE POLICY "Admins update plans" ON public.plans FOR UPDATE TO authenticated USING (public.has_role(auth.uid(),'admin'));
+CREATE POLICY "Admins delete plans" ON public.plans FOR DELETE TO authenticated USING (public.has_role(auth.uid(),'admin'));

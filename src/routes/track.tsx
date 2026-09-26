@@ -1,102 +1,73 @@
 import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Section, SectionHeading } from "@/components/site/Section";
-import { TRACK_STAGES } from "@/lib/campusclean";
+import { Card, CardContent } from "@/components/ui/card";
+import { STATUS_FLOW, STATUS_LABELS } from "@/lib/catalog";
 
 export const Route = createFileRoute("/track")({
   head: () => ({
     meta: [
-      { title: "Track Your Laundry — CampusClean" },
-      {
-        name: "description",
-        content:
-          "Enter your CampusClean order ID to follow your laundry through pickup, washing, ironing, quality check and doorstep delivery.",
-      },
-      { property: "og:title", content: "Track Your Laundry — CampusClean" },
-      {
-        property: "og:description",
-        content: "Twelve tracked stages, each with a timestamp, for every CampusClean order.",
-      },
+      { title: "Track an order | CampusClean" },
+      { name: "description", content: "Enter your CampusClean order ID to see where your laundry is right now." },
+      { property: "og:title", content: "Track a CampusClean order" },
+      { property: "og:description", content: "See where your laundry is with your order ID." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: TrackPage,
+  component: Track,
 });
 
-function TrackPage() {
-  const [orderId, setOrderId] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+type Result = { code: string; status: string; pickup_date: string; updated_at: string };
+
+function Track() {
+  const [code, setCode] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<Result | null | "none">(null);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    const c = code.trim().toUpperCase();
+    if (!/^CC-\d{4}-\d{6}$/.test(c)) return setResult("none");
+    setBusy(true);
+    const { data } = await supabase.rpc("track_order", { _code: c });
+    setBusy(false);
+    setResult(data?.[0] ?? "none");
+  }
+
+  const idx = result && result !== "none" ? STATUS_FLOW.indexOf(result.status as (typeof STATUS_FLOW)[number]) : -1;
 
   return (
-    <Section>
-      <SectionHeading
-        eyebrow="Track Your Laundry"
-        title="Where are my clothes?"
-        body="Your order ID looks like CC-2026-000124. It is on your booking confirmation and on your order page."
-      />
-
-      <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start">
-        <form
-          className="rounded-2xl border border-border bg-card p-6 shadow-soft"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSubmitted(true);
-          }}
-        >
-          <Label htmlFor="orderId">Order ID</Label>
-          <Input
-            id="orderId"
-            value={orderId}
-            onChange={(e) => setOrderId(e.target.value)}
-            placeholder="CC-2026-000124"
-            className="mt-2"
-          />
-          <Button type="submit" className="mt-4 w-full rounded-full">
-            Track order
-          </Button>
-
-          {submitted ? (
-            <Alert className="mt-6">
-              <AlertTitle>Order tracking isn't live yet</AlertTitle>
-              <AlertDescription>
-                CampusClean accounts and live orders are being set up. Once bookings open at your
-                campus, this page will show the real status of your order, with timestamps for
-                every stage.
-              </AlertDescription>
-            </Alert>
-          ) : null}
-        </form>
-
-        <div className="rounded-2xl border border-border bg-card p-6">
-          <p className="text-sm font-semibold">What the timeline looks like</p>
-          <ol className="mt-5 space-y-3">
-            {TRACK_STAGES.map((stage, i) => (
-              <li key={stage} className="flex items-center gap-3 text-sm">
-                <span
-                  className={`size-2.5 rounded-full ${
-                    i < 4 ? "bg-primary" : "border border-border bg-muted"
-                  }`}
-                />
-                <span className={i < 4 ? "font-medium" : "text-muted-foreground"}>{stage}</span>
-              </li>
-            ))}
-          </ol>
-          <p className="mt-5 text-xs text-muted-foreground">
-            Sample timeline shown for illustration.
-          </p>
+    <div className="container-page max-w-xl py-16">
+      <h1 className="text-4xl font-bold">Track an order</h1>
+      <p className="mt-3 text-muted-foreground">Your order ID is on your confirmation and your bag tag, for example CC-2026-000001.</p>
+      <form onSubmit={submit} className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-end">
+        <div className="grid flex-1 gap-2">
+          <Label htmlFor="code">Order ID</Label>
+          <Input id="code" value={code} onChange={(e) => setCode(e.target.value)} placeholder="CC-2026-000001" />
         </div>
-      </div>
+        <Button type="submit" disabled={busy}>{busy ? "Checking..." : "Track"}</Button>
+      </form>
 
-      <div className="mt-10">
-        <Button asChild variant="outline" className="rounded-full">
-          <Link to="/auth">Create an account</Link>
-        </Button>
-      </div>
-    </Section>
+      {result === "none" ? (
+        <p className="mt-6 text-sm text-destructive">We could not find that order ID. Check it and try again.</p>
+      ) : result ? (
+        <Card className="mt-8">
+          <CardContent className="pt-6">
+            <p className="text-sm text-muted-foreground">{result.code}</p>
+            <p className="mt-1 text-2xl font-semibold">{STATUS_LABELS[result.status]}</p>
+            <p className="mt-1 text-xs text-muted-foreground">Updated {new Date(result.updated_at).toLocaleString("en-IN")}</p>
+            {idx >= 0 ? (
+              <div className="mt-5 h-2 overflow-hidden rounded-full bg-secondary">
+                <div className="h-full bg-primary" style={{ width: `${((idx + 1) / STATUS_FLOW.length) * 100}%` }} />
+              </div>
+            ) : null}
+          </CardContent>
+        </Card>
+      ) : null}
+    </div>
   );
 }

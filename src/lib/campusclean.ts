@@ -34,7 +34,7 @@ export const SERVICES: Service[] = [
   {
     slug: "wash-dry",
     name: "Wash + Dry",
-    description: "Washed and fully machine dried — no hunting for space on the hostel line.",
+    description: "Washed and fully machine dried, no hunting for space on the hostel line.",
     unit: "per kg",
     indicativePrice: "₹80",
     turnaround: "48 hours",
@@ -104,7 +104,7 @@ export const STEPS = [
   },
   {
     title: "We collect from your hostel",
-    body: "Our pickup staff scans your order QR at the door, so nothing gets mixed up.",
+    body: "Our staff collect your bag and tag it with your order ID, so nothing gets mixed up.",
   },
   {
     title: "Washed, dried, pressed",
@@ -117,40 +117,39 @@ export const STEPS = [
 ];
 
 export const TRACK_STAGES = [
-  "Order Placed",
-  "Pickup Scheduled",
-  "Picked Up",
-  "Received",
-  "Sorting",
+  "Order placed",
+  "Pickup scheduled",
+  "Picked up",
+  "Received at facility",
   "Washing",
   "Drying",
   "Ironing",
-  "Quality Check",
+  "Quality check",
   "Packed",
-  "Out for Delivery",
+  "Out for delivery",
   "Delivered",
 ];
 
 export const FAQS = [
   {
     q: "Where does CampusClean operate right now?",
-    a: "We are launching at NEHU Tura Campus first. NEHU Shillong and other universities across Northeast India follow as we grow. You can register from any campus — you will be told when we reach yours.",
+    a: "We are launching at NEHU Tura Campus first. NEHU Shillong and other universities across Northeast India follow as we grow. You can register from any campus, you will be told when we reach yours.",
   },
   {
     q: "Do I need a university email address?",
-    a: "No. You register with your mobile number and your Student or Staff ID. Our team verifies your ID before your first order, and you can optionally upload a photo of your ID card to speed it up.",
+    a: "No. You register with your mobile number and your Student or Staff ID. Our team verifies your ID before your first pickup.",
   },
   {
     q: "How is my laundry kept separate from everyone else's?",
-    a: "Every order gets a unique ID like CC-2026-000001 and a QR code. Staff scan that code at pickup, intake, each processing stage and delivery, so your bag is tracked the whole way.",
+    a: "Every order gets a unique ID like CC-2026-000001 and a tag on your bag. Staff update its status at pickup, each processing stage and delivery, and you can follow it from your account.",
   },
   {
     q: "How do I pay?",
-    a: "Online payment (UPI, cards, net banking) is being set up. Until the payment gateway is live, orders are handled as pay-on-delivery — we will never show a fake successful payment.",
+    a: "In cash or by UPI when your clothes are delivered. We do not take online card payments yet.",
   },
   {
     q: "What if something is lost or damaged?",
-    a: "You can raise a claim from your order page. Every claim is reviewed by a manager and moves through Submitted, Under Review, Approved or Rejected, and Resolved — with the outcome recorded.",
+    a: "Email us within 48 hours of delivery with your order ID and photos. A manager reviews every report, and confirmed losses are compensated as set out in our Terms.",
   },
   {
     q: "Can I give special instructions?",
@@ -158,11 +157,11 @@ export const FAQS = [
   },
   {
     q: "What does it cost?",
-    a: "Indicative launch pricing starts at ₹60 per kg for a plain wash. Final rates are set per campus before launch and always shown in full before you confirm an order.",
+    a: "Wash and fold starts at ₹60 per kg. Pickup and standard delivery are free. You see the full bill before you confirm, and it is adjusted only if the weight on our scale differs from your estimate.",
   },
   {
     q: "Do you offer plans for regular laundry?",
-    a: "Weekly, monthly and hostel saver plans are part of the roadmap. Rewards and referral points are being built in from the start.",
+    a: "Yes. Weekly, monthly and semester plans include a kg allowance and pickups. You pay at your first pickup and the plan starts that day.",
   },
 ];
 

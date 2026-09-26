@@ -6,16 +6,16 @@ import { STEPS, TRACK_STAGES } from "@/lib/campusclean";
 export const Route = createFileRoute("/how-it-works")({
   head: () => ({
     meta: [
-      { title: "How CampusClean Works — Pickup, Cleaning, Delivery" },
+      { title: "How CampusClean Works, Pickup, Cleaning, Delivery" },
       {
         name: "description",
         content:
-          "Book a slot, we collect from your hostel, wash and press at our facility, and deliver folded laundry back to your door — tracked across 12 stages.",
+          "Book a slot, we collect from your hostel, wash and press at our facility, and deliver folded laundry back to your door, tracked at every stage.",
       },
       { property: "og:title", content: "How CampusClean Works" },
       {
         property: "og:description",
-        content: "From hostel pickup to doorstep delivery, with QR tracking at every stage.",
+        content: "From hostel pickup to doorstep delivery, with tracking at every stage.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -49,11 +49,11 @@ function HowItWorks() {
         </ol>
       </Section>
 
-      <Section className="surface-gradient">
+      <Section className="bg-secondary">
         <SectionHeading
           eyebrow="Order Stages"
           title="Twelve stages, all recorded"
-          body="Every status change stores the stage, the timestamp, the staff member and an optional note, so your timeline is a real record — not an estimate."
+          body="Every status change stores the stage, the timestamp, the staff member and an optional note, so your timeline is a real record, not an estimate."
         />
         <ol className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {TRACK_STAGES.map((stage, i) => (
@@ -73,7 +73,7 @@ function HowItWorks() {
             <Link to="/book">Book your laundry</Link>
           </Button>
           <Button asChild variant="outline" className="rounded-full">
-            <Link to="/pricing">See pricing</Link>
+            <Link to="/services">See prices</Link>
           </Button>
         </div>
       </Section>
