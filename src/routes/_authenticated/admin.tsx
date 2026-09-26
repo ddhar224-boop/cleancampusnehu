@@ -99,7 +99,7 @@ function OrdersPanel() {
           {q.data.map((o) => (
             <tr key={o.id}>
               <td className="p-3 font-medium">{o.code}</td>
-              <td className="p-3 text-muted-foreground">{o.pickup_date} {o.pickup_slot}<br />{o.pickup_location}</td>
+              <td className="p-3 text-muted-foreground">{o.pickup_date} {o.pickup_slot}<br />{o.pickup_location}{o.delivery_date ? <><br />Deliver {o.delivery_date} {o.delivery_slot}</> : null}</td>
               <td className="p-3">{rupees(o.total)}</td>
               <td className="p-3">
                 <select value={o.status} onChange={(e) => update(o.id, { status: e.target.value as OrderStatus })} className="h-8 rounded-md border border-input bg-background px-2 text-sm">
