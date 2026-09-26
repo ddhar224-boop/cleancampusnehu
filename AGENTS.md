@@ -11,4 +11,3 @@
 - Order pricing is computed only in the `place_order` database function from the services table; clients never send prices. Why: prevents tampering.
 - Roles live in `user_roles` checked via `has_role`; staff/admin UI at /admin relies on RLS, not client checks. Why: no privilege escalation.
 - Public catalog/tracking reads use the browser client with narrow anon policies / `track_order` RPC (status only). Why: no personal data exposed.
-- Visual system uses Electric Campus colors, Outfit/Figtree typography, dynamic bento layouts, and documentary campus photography with restrained motion. Why: keeps the product youthful, practical, and trustworthy without generic startup styling.

@@ -3,10 +3,10 @@ import { BRAND } from "@/lib/campusclean";
 
 export function SiteFooter() {
   return (
-    <footer className="ink-panel mt-24 border-t-8 border-mint">
-      <div className="container-page grid gap-10 py-16 md:grid-cols-4">
+    <footer className="ink-panel mt-24">
+      <div className="container-page grid gap-10 py-14 md:grid-cols-4">
         <div className="md:col-span-2">
-          <p className="font-display text-2xl font-extrabold">
+          <p className="font-display text-xl font-bold">
             Campus<span className="text-accent">Clean</span>
           </p>
           <p className="mt-3 max-w-sm font-display text-lg font-semibold text-ink-foreground">{BRAND.hinglish}</p>

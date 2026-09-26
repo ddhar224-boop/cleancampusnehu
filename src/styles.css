@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * CampusClean Electric Campus design system.
- * Deep ink, electric blue, fresh mint and coral. Outfit + Figtree.
+ * CampusClean design system.
+ * Navy ink, electric blue primary, coral accent. Sora + Manrope. All colors in oklch.
  */
 
 @theme inline {
@@ -58,38 +58,38 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
-  --shadow-soft: 0 2px 4px oklch(0.2 0.05 270 / 0.04), 0 16px 40px oklch(0.2 0.05 270 / 0.08);
-  --shadow-lift: 0 6px 16px oklch(0.2 0.05 270 / 0.08), 0 28px 70px oklch(0.2 0.05 270 / 0.14);
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --shadow-soft: 0 1px 2px oklch(0.25 0.05 200 / 0.04), 0 12px 32px oklch(0.25 0.05 200 / 0.08);
+  --shadow-lift: 0 2px 6px oklch(0.25 0.05 200 / 0.06), 0 24px 60px oklch(0.25 0.05 200 / 0.14);
 }
 
 :root {
-  --radius: 1rem;
-  --background: oklch(0.98 0.012 255);
-  --foreground: oklch(0.205 0.052 276);
+  --radius: 0.75rem;
+  --background: oklch(0.967 0.008 275);
+  --foreground: oklch(0.23 0.05 272);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.23 0.05 272);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.23 0.05 272);
-  --primary: oklch(0.55 0.21 264);
-  --primary-soft: oklch(0.9 0.07 245);
+  --primary: oklch(0.5 0.21 268);
+  --primary-soft: oklch(0.87 0.06 255);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.025 250);
+  --secondary: oklch(0.935 0.018 275);
   --secondary-foreground: oklch(0.23 0.05 272);
   --muted: oklch(0.945 0.012 275);
   --muted-foreground: oklch(0.5 0.03 272);
-  --accent: oklch(0.71 0.18 29);
-  --accent-foreground: oklch(0.19 0.04 275);
+  --accent: oklch(0.7 0.18 30);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.58 0.21 25);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.91 0.012 275);
   --input: oklch(0.89 0.014 275);
   --ring: oklch(0.5 0.21 268);
-  --ink: oklch(0.205 0.052 276);
+  --ink: oklch(0.23 0.05 272);
   --ink-foreground: oklch(0.97 0.008 275);
-  --mint: oklch(0.83 0.1 177);
-  --mint-foreground: oklch(0.22 0.06 190);
+  --mint: oklch(0.93 0.03 268);
+  --mint-foreground: oklch(0.35 0.15 268);
   --sand: oklch(0.95 0.03 35);
   --success: oklch(0.62 0.14 155);
   --warning: oklch(0.78 0.14 75);
@@ -164,8 +164,16 @@
   h4,
   .font-display {
     font-family: var(--font-display);
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
   }
+}
+
+@utility surface-gradient {
+  background-color: var(--color-secondary);
+}
+
+@utility hero-gradient {
+  background-color: var(--color-background);
 }
 
 @utility ink-panel {
@@ -173,53 +181,28 @@
   color: var(--color-ink-foreground);
 }
 
+@utility text-gradient {
+  color: var(--color-primary);
+}
+
 @utility container-page {
   width: 100%;
   margin-inline: auto;
-  max-width: 80rem;
+  max-width: 76rem;
   padding-inline: 1.25rem;
 }
 
 @utility bento {
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   border: 1px solid var(--color-border);
   background-color: var(--color-card);
   padding: 1.5rem;
-  box-shadow: var(--shadow-soft);
-  transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+  transition: transform 150ms ease, box-shadow 150ms ease;
 }
 
 @utility bento-hover {
   &:hover {
-    transform: translateY(-5px);
-    border-color: color-mix(in oklab, var(--color-primary) 35%, var(--color-border));
-    box-shadow: var(--shadow-lift);
-  }
-}
-
-@utility page-reveal {
-  animation: page-reveal 600ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
-}
-
-@utility float-gentle {
-  animation: float-gentle 5s ease-in-out infinite;
-}
-
-@keyframes page-reveal {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes float-gentle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px -12px oklch(0.23 0.05 272 / 0.25);
   }
 }
