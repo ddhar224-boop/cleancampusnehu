@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { STATUS_FLOW, STATUS_LABELS } from "@/lib/catalog";
 
 export const Route = createFileRoute("/track")({
+  validateSearch: (s: Record<string, unknown>): { code?: string } => (typeof s.code === "string" && s.code ? { code: s.code.slice(0, 20) } : {}),
   head: () => ({
     meta: [
       { title: "Track an order | CampusClean" },
@@ -24,13 +25,23 @@ export const Route = createFileRoute("/track")({
 type Result = { code: string; status: string; pickup_date: string; updated_at: string };
 
 function Track() {
-  const [code, setCode] = useState("");
+  const search = Route.useSearch();
+  const [code, setCode] = useState(search.code ?? "");
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<Result | null | "none">(null);
 
+  useEffect(() => {
+    if (search.code) void lookup(search.code);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.code]);
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    const c = code.trim().toUpperCase();
+    await lookup(code);
+  }
+
+  async function lookup(raw: string) {
+    const c = raw.trim().toUpperCase();
     if (!/^CC-\d{4}-\d{6}$/.test(c)) return setResult("none");
     setBusy(true);
     const { data } = await supabase.rpc("track_order", { _code: c });

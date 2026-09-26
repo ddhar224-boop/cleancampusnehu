@@ -14,6 +14,7 @@ const NAV = [
   { to: "/track", label: "Track Order" },
   { to: "/about", label: "About" },
   { to: "/faq", label: "FAQ" },
+  { to: "/contact", label: "Contact" },
 ] as const;
 
 export function SiteHeader() {
