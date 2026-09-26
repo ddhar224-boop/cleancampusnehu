@@ -7,9 +7,9 @@ export function SiteFooter() {
       <div className="container-page grid gap-10 py-14 md:grid-cols-4">
         <div className="md:col-span-2">
           <p className="font-display text-xl font-bold">
-            Campus<span className="text-primary">Clean</span>
+            Campus<span className="text-accent">Clean</span>
           </p>
-          <p className="mt-3 max-w-sm text-sm text-ink-foreground/70">{BRAND.marketingTagline}</p>
+          <p className="mt-3 max-w-sm font-display text-lg font-semibold text-ink-foreground">{BRAND.hinglish}</p>
           <p className="mt-6 text-sm text-ink-foreground/60">
             Launching at {BRAND.launchCampus}. Built by students, for campus life in Northeast
             India.
@@ -48,6 +48,11 @@ export function SiteFooter() {
             <li>
               <Link to="/about" className="hover:text-ink-foreground">
                 About us
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="hover:text-ink-foreground">
+                Contact
               </Link>
             </li>
             <li>
