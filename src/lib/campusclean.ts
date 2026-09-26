@@ -10,8 +10,8 @@ export const BRAND = {
   marketingTagline: "Your Campus Laundry, Reimagined.",
   hinglish: "Dhulai hum karenge, chill aap karo.",
   launchCampus: "NEHU Tura Campus",
-  email: "hello@campusclean.in",
-  phone: "",
+  email: "campuscleaning@gmail.com",
+  phone: "9101706966",
 };
 
 export type Service = {
