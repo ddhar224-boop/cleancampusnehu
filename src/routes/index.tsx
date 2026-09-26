@@ -242,10 +242,10 @@ function Home() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-sm font-bold uppercase tracking-widest text-accent">Coming soon</p>
-            <h2 className="mt-2 text-3xl font-bold sm:text-4xl">Aur bhi aa raha hai</h2>
+            <h2 className="mt-2 text-3xl font-bold sm:text-4xl">More on the way</h2>
             <p className="mt-2 text-muted-foreground">
-              We are building these next. Nothing here is live yet, so do not wait on any of it for
-              your laundry.
+              CampusClean is growing beyond laundry. None of these are live yet, so do not wait on
+              any of them for your washing.
             </p>
           </div>
         </div>
