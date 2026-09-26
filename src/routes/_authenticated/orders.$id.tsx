@@ -63,7 +63,7 @@ function OrderDetail() {
           <Badge variant={o.status === "cancelled" ? "destructive" : "secondary"}>{STATUS_LABELS[o.status]}</Badge>
         </div>
         <p className="mt-2 text-sm text-muted-foreground">
-          Pickup {o.pickup_date}, {o.pickup_slot} from {o.pickup_location}. {o.delivery_speed === "express" ? "Express" : "Standard"} delivery.
+          Pickup {o.pickup_date}, {o.pickup_slot} from {o.pickup_location}. {o.delivery_speed === "express" ? "Express" : "Standard"} delivery{o.delivery_date ? `, preferred ${o.delivery_date} ${o.delivery_slot ?? ""}` : ""}.
         </p>
 
         {o.status !== "cancelled" ? (
