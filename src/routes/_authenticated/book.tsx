@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { rupees } from "@/lib/auth";
-import { CATEGORY_LABELS, EXPRESS_FEE, PICKUP_SLOTS, servicesQuery, unitLabel } from "@/lib/catalog";
+import { CATEGORY_LABELS, EXPRESS_FEE, PICKUP_SLOTS, lineText, servicesQuery } from "@/lib/catalog";
 
 export const Route = createFileRoute("/_authenticated/book")({
   head: () => ({
@@ -165,7 +165,7 @@ function Book() {
         ) : null}
 
         <section className="grid gap-4">
-          <h2 className="font-semibold">2. Pickup</h2>
+          <h2 className="font-semibold">3. Pickup</h2>
           <div className="grid gap-2">
             <Label htmlFor="loc">Pickup location</Label>
             <Input id="loc" value={loc} onChange={(e) => setLocation(e.target.value)} placeholder="Hostel name, room number" maxLength={200} />
@@ -185,7 +185,7 @@ function Book() {
         </section>
 
         <section className="grid gap-4">
-          <h2 className="font-semibold">3. Delivery and payment</h2>
+          <h2 className="font-semibold">4. Delivery and payment</h2>
           <div className="grid gap-3 sm:grid-cols-2">
             <Choice checked={speed === "standard"} onClick={() => setSpeed("standard")} title="Standard" body="Back within the service turnaround. Free." />
             <Choice checked={speed === "express"} onClick={() => setSpeed("express")} title="Express" body={`Jumps the queue. ${rupees(EXPRESS_FEE)} extra.`} />
@@ -207,7 +207,7 @@ function Book() {
               <dl className="mt-4 space-y-2 text-sm">
                 {lines.map((l) => (
                   <div key={l.id} className="flex justify-between gap-3">
-                    <dt className="text-muted-foreground">{l.name} × {l.q}{l.unit === "kg" ? " kg" : ""}</dt>
+                    <dt className="text-muted-foreground">{l.name} <span className="text-xs">{lineText(l.q, l.unit, l.price, rupees)}</span></dt>
                     <dd>{rupees(l.total)}</dd>
                   </div>
                 ))}
