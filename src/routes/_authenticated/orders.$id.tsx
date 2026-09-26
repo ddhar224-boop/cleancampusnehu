@@ -42,7 +42,7 @@ function OrderDetail() {
   async function cancel() {
     if (!confirm("Cancel this order?")) return;
     const { error } = await supabase.rpc("cancel_my_order", { _id: id });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Order cancelled");
     qc.invalidateQueries();
   }

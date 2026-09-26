@@ -44,7 +44,7 @@ function Book() {
   const [qty, setQty] = useState<Record<string, number>>({});
   const [location, setLocation] = useState<string | null>(null);
   const [date, setDate] = useState(todayPlus(1));
-  const [slot, setSlot] = useState(PICKUP_SLOTS[3]);
+  const [slot, setSlot] = useState(PICKUP_SLOTS[3]!);
   const [speed, setSpeed] = useState<"standard" | "express">("standard");
   const [payment, setPayment] = useState<"cash" | "upi_on_delivery">("upi_on_delivery");
   const [notes, setNotes] = useState("");
@@ -72,8 +72,8 @@ function Book() {
   }
 
   async function submit() {
-    if (!lines.length) return toast.error("Add at least one service");
-    if (loc.trim().length < 2) return toast.error("Enter your pickup location");
+    if (!lines.length) { toast.error("Add at least one service"); return; }
+    if (loc.trim().length < 2) { toast.error("Enter your pickup location"); return; }
     setBusy(true);
     const { data, error } = await supabase.rpc("place_order", {
       _items: lines.map((l) => ({ service_id: l.id, quantity: l.q })),
@@ -85,8 +85,9 @@ function Book() {
       _payment_method: payment,
     });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     const row = Array.isArray(data) ? data[0] : data;
+    if (!row) { toast.error("Could not place order"); return; }
     toast.success(`Order ${row.code} placed`);
     navigate({ to: "/orders/$id", params: { id: row.id } });
   }

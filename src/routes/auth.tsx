@@ -66,7 +66,7 @@ function AuthPage() {
     e.preventDefault();
     const f = Object.fromEntries(new FormData(e.currentTarget));
     const parsed = signUpSchema.safeParse(f);
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message ?? "Check the form"); return; }
     const { email, password, ...meta } = parsed.data;
     setBusy(true);
     const { data, error } = await supabase.auth.signUp({
@@ -75,12 +75,12 @@ function AuthPage() {
       options: { emailRedirectTo: window.location.origin + "/dashboard", data: { ...meta, campus: "Tura Campus" } },
     });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     if (!data.session) setSent(email);
   }
 
   async function onForgot(email: string) {
-    if (!z.string().email().safeParse(email).success) return toast.error("Enter your email above first");
+    if (!z.string().email().safeParse(email).success) { toast.error("Enter your email above first"); return; }
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: window.location.origin + "/reset-password",
     });

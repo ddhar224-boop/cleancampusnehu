@@ -77,7 +77,7 @@ function OrdersPanel() {
 
   async function update(id: string, patch: { status?: OrderStatus; payment_status?: string }) {
     const { error } = await supabase.from("orders").update(patch).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["admin-orders"] });
   }
 
@@ -134,12 +134,12 @@ function SubsPanel() {
       status: "active", payment_status: "paid",
       starts_on: start.toISOString().slice(0, 10), ends_on: end.toISOString().slice(0, 10),
     }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["admin-subs"] });
   }
   async function setStatus(id: string, status: string) {
     const { error } = await supabase.from("subscriptions").update({ status }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["admin-subs"] });
   }
 
@@ -175,7 +175,7 @@ function MembersPanel() {
   });
   async function verify(id: string, v: string) {
     const { error } = await supabase.from("profiles").update({ verification_status: v }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["admin-members"] });
   }
   if (!q.data?.length) return <p className="mt-4 text-sm text-muted-foreground">{q.isLoading ? "Loading..." : "No members yet."}</p>;
@@ -210,7 +210,7 @@ function PricesPanel() {
   });
   async function save(id: string, patch: { price?: number; active?: boolean }) {
     const { error } = await supabase.from("services").update(patch).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Saved");
     qc.invalidateQueries();
   }

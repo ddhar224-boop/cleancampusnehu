@@ -37,15 +37,15 @@ function Plans() {
   });
 
   async function subscribe(planId: string) {
-    if (!user) return navigate({ to: "/auth" });
+    if (!user) { navigate({ to: "/auth" }); return; }
     const { error } = await supabase.from("subscriptions").insert({ user_id: user.id, plan_id: planId, price: 0 });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Plan requested. Pay at your next pickup and we will activate it.");
     qc.invalidateQueries({ queryKey: ["my-sub"] });
   }
   async function cancel(id: string) {
     const { error } = await supabase.rpc("cancel_my_subscription", { _id: id });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["my-sub"] });
   }
 
