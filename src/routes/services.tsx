@@ -1,72 +1,61 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Section, SectionHeading } from "@/components/site/Section";
-import { SERVICES } from "@/lib/campusclean";
+import { CATEGORY_LABELS, servicesQuery, unitLabel } from "@/lib/catalog";
+import { rupees } from "@/lib/auth";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Laundry Services, CampusClean" },
-      {
-        name: "description",
-        content:
-          "Wash, dry, iron, express, delicate care, bedding and shoe cleaning for university students and staff, priced per kg, per item or fixed.",
-      },
-      { property: "og:title", content: "Laundry Services, CampusClean" },
-      {
-        property: "og:description",
-        content: "Every CampusClean service, what it includes, and indicative launch pricing.",
-      },
+      { title: "Services and prices | CampusClean" },
+      { name: "description", content: "Wash and fold, ironing, dry cleaning, bedding, shoes and bags. Current CampusClean prices at NEHU Tura." },
+      { property: "og:title", content: "CampusClean services and prices" },
+      { property: "og:description", content: "Wash and fold, ironing, dry cleaning, bedding and more." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: ServicesPage,
+  component: Services,
 });
 
-function ServicesPage() {
-  return (
-    <Section>
-      <SectionHeading
-        eyebrow="Our Services"
-        title="Everything we clean"
-        body="Each service is configured per campus by our team, weight based, item based or fixed price. Prices below are indicative for launch."
-      />
-      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {SERVICES.map((s) => (
-          <Card key={s.slug} className="border-border/70 shadow-soft">
-            <CardContent className="pt-6">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="text-base font-semibold">{s.name}</h3>
-                <Badge variant="secondary" className="shrink-0 rounded-full">
-                  {s.unit}
-                </Badge>
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.description}</p>
-              <div className="mt-5 flex items-end justify-between">
-                <p className="font-display text-2xl font-bold text-primary">
-                  {s.indicativePrice}
-                </p>
-                <p className="text-xs text-muted-foreground">{s.turnaround}</p>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+function Services() {
+  const q = useQuery(servicesQuery);
+  const grouped: Record<string, NonNullable<typeof q.data>> = {};
+  for (const s of q.data ?? []) (grouped[s.category] ??= []).push(s);
 
-      <div className="mt-12 rounded-2xl border border-border bg-card p-6">
-        <h3 className="text-base font-semibold">Item-based washing</h3>
-        <p className="mt-2 text-sm text-muted-foreground">
-          For item pricing you count pieces instead of weight: shirt, t-shirt, trouser, jeans,
-          bedsheet, blanket, jacket, saree and other. Staff confirm the received count at intake,
-          and any discrepancy is recorded and reported to you.
-        </p>
-        <Button asChild className="mt-6 rounded-full">
-          <Link to="/book">Book laundry</Link>
-        </Button>
+  return (
+    <div className="container-page py-16">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-4xl font-bold">Services and prices</h1>
+          <p className="mt-3 max-w-2xl text-muted-foreground">
+            Pickup and standard delivery are free on campus. Express delivery adds ₹40. Weight is confirmed on our scale at pickup.
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button asChild variant="outline"><Link to="/plans">Plans</Link></Button>
+          <Button asChild><Link to="/book">Book a pickup</Link></Button>
+        </div>
       </div>
-    </Section>
+      {q.isLoading ? <p className="mt-8 text-sm text-muted-foreground">Loading...</p> : null}
+      {Object.entries(grouped).map(([cat, list]) => (
+        <section key={cat} className="mt-12">
+          <h2 className="text-xl font-semibold">{CATEGORY_LABELS[cat] ?? cat}</h2>
+          <div className="mt-4 overflow-x-auto rounded-lg border border-border">
+            <table className="w-full text-sm">
+              <tbody className="divide-y divide-border">
+                {list.map((s) => (
+                  <tr key={s.id}>
+                    <td className="p-4"><p className="font-medium">{s.name}</p><p className="mt-0.5 text-muted-foreground">{s.description}</p></td>
+                    <td className="whitespace-nowrap p-4 text-muted-foreground">{s.turnaround}</td>
+                    <td className="whitespace-nowrap p-4 text-right font-medium">{rupees(s.price)} <span className="font-normal text-muted-foreground">{unitLabel(s.unit)}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ))}
+    </div>
   );
 }
