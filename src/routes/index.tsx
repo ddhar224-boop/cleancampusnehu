@@ -251,6 +251,10 @@ function Home() {
         </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
+            { icon: IdCard, t: "NEHU Points Card", b: "Pay with your student ID like a metro card. Top up once, tap to pay for laundry across campus, no cash needed." },
+            { icon: UtensilsCrossed, t: "Tiffin services", b: "Daily home-style meals from verified campus kitchens, delivered to your hostel on a plan." },
+            { icon: Building2, t: "PG and hostel rental", b: "Verified PG and room listings near campus, with real photos, real rents and no broker runaround." },
+            { icon: Backpack, t: "Backpackers", b: "Laundry and travel help for students passing through Tura and Shillong, no hostel address needed." },
             { icon: Wallet, t: "Student wallet", b: "Add money once and pay for pickups from your balance, no cash counting at the door." },
             { icon: Gift, t: "Rewards and referrals", b: "Points on every order and a share code that gives you and your friend a discount." },
             { icon: Bell, t: "In-app notifications", b: "A message the moment your order moves, without opening the app to check." },
