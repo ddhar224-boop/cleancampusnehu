@@ -62,7 +62,7 @@ function Home() {
           <div>
             <p className="text-sm font-medium text-ink-foreground/60">Laundry pickup at {BRAND.launchCampus}</p>
             <h1 className="mt-4 max-w-2xl text-4xl font-extrabold leading-[1.08] sm:text-6xl">
-              Dhulai hum karenge, <span className="text-accent">chill</span> aap karo.
+              <span className="text-primary-soft">Dhulai</span> hum karenge, <span className="text-accent">chill</span> aap karo.
             </h1>
           </div>
           <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -133,18 +133,18 @@ function Home() {
           ),
         )}
 
-        <div className="relative flex flex-col justify-between overflow-hidden rounded-2xl bg-accent p-8 text-accent-foreground md:col-span-2 md:row-span-2">
+        <div className="relative flex flex-col justify-between overflow-hidden rounded-2xl bg-primary-soft p-8 text-ink md:col-span-2 md:row-span-2">
           <div>
-            <span className="inline-block rounded-full bg-accent-foreground/20 px-3 py-1 text-[10px] font-bold uppercase tracking-widest">Lowest per kg</span>
+            <span className="inline-block rounded-full bg-ink/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest">Lowest per kg</span>
             <h3 className="mt-4 text-2xl font-bold">{semester?.name ?? "Semester Saver"}</h3>
-            <p className="mt-2 text-sm text-accent-foreground/90">One payment for the whole term. {semester ? `${Number(semester.kg_allowance)} kg and ${semester.pickups_included} pickups.` : ""}</p>
+            <p className="mt-2 text-sm text-ink/80">One payment for the whole term. {semester ? `${Number(semester.kg_allowance)} kg and ${semester.pickups_included} pickups.` : ""}</p>
           </div>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="font-display text-4xl font-extrabold">{semester ? rupees(semester.price) : ""}</p>
-              <p className="mt-1 text-xs font-bold uppercase text-accent-foreground/80">Priority slot booking included</p>
+              <p className="mt-1 text-xs font-bold uppercase text-ink/70">Priority slot booking included</p>
             </div>
-            <Button asChild size="lg" className="bg-card text-accent hover:bg-card/90">
+            <Button asChild size="lg" className="bg-ink text-ink-foreground hover:bg-ink/90">
               <Link to="/plans">See plan</Link>
             </Button>
           </div>
