@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { rupees, useRoles } from "@/lib/auth";
 import { useState } from "react";
+import { CAMPUSES } from "@/lib/campus";
 import { CATEGORY_LABELS, STATUS_FLOW, STATUS_LABELS } from "@/lib/catalog";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -51,11 +52,15 @@ function Admin() {
           {isAdmin ? <TabsTrigger value="subs">Plans</TabsTrigger> : null}
           {isAdmin ? <TabsTrigger value="members">Members</TabsTrigger> : null}
           {isAdmin ? <TabsTrigger value="prices">Prices</TabsTrigger> : null}
+          {isAdmin ? <TabsTrigger value="hostels">Hostels</TabsTrigger> : null}
+          {isAdmin ? <TabsTrigger value="waitlist">Waitlist</TabsTrigger> : null}
         </TabsList>
         <TabsContent value="orders"><OrdersPanel /></TabsContent>
         {isAdmin ? <TabsContent value="subs"><SubsPanel /></TabsContent> : null}
         {isAdmin ? <TabsContent value="members"><MembersPanel /></TabsContent> : null}
         {isAdmin ? <TabsContent value="prices"><PricesPanel /></TabsContent> : null}
+        {isAdmin ? <TabsContent value="hostels"><HostelsPanel /></TabsContent> : null}
+        {isAdmin ? <TabsContent value="waitlist"><WaitlistPanel /></TabsContent> : null}
       </Tabs>
     </div>
   );
@@ -68,7 +73,7 @@ function OrdersPanel() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("orders")
-        .select("id, code, status, total, pickup_date, pickup_slot, pickup_location, payment_status, user_id")
+        .select("id, code, status, total, pickup_date, pickup_slot, pickup_location, delivery_date, delivery_slot, payment_status, user_id")
         .order("created_at", { ascending: false })
         .limit(200);
       if (error) throw error;
@@ -94,7 +99,7 @@ function OrdersPanel() {
           {q.data.map((o) => (
             <tr key={o.id}>
               <td className="p-3 font-medium">{o.code}</td>
-              <td className="p-3 text-muted-foreground">{o.pickup_date} {o.pickup_slot}<br />{o.pickup_location}</td>
+              <td className="p-3 text-muted-foreground">{o.pickup_date} {o.pickup_slot}<br />{o.pickup_location}{o.delivery_date ? <><br />Deliver {o.delivery_date} {o.delivery_slot}</> : null}</td>
               <td className="p-3">{rupees(o.total)}</td>
               <td className="p-3">
                 <select value={o.status} onChange={(e) => update(o.id, { status: e.target.value as OrderStatus })} className="h-8 rounded-md border border-input bg-background px-2 text-sm">
@@ -276,6 +281,91 @@ function PricesPanel() {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function HostelsPanel() {
+  const qc = useQueryClient();
+  const [campusId, setCampusId] = useState(CAMPUSES[0]!.id);
+  const [name, setName] = useState("");
+  const q = useQuery({
+    queryKey: ["admin-hostels", campusId],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("hostels").select("id, name, active").eq("campus_id", campusId).order("name");
+      if (error) throw error;
+      return data;
+    },
+  });
+  const refresh = () => { qc.invalidateQueries({ queryKey: ["admin-hostels"] }); qc.invalidateQueries({ queryKey: ["hostels"] }); };
+  async function add() {
+    if (name.trim().length < 2) { toast.error("Enter a hostel name"); return; }
+    const { error } = await supabase.from("hostels").insert({ campus_id: campusId, name: name.trim() });
+    if (error) { toast.error(error.message); return; }
+    setName(""); refresh();
+  }
+  async function patch(id: string, p: { active?: boolean; name?: string }) {
+    const { error } = await supabase.from("hostels").update(p).eq("id", id);
+    if (error) toast.error(error.message); else refresh();
+  }
+  async function remove(id: string) {
+    const { error } = await supabase.from("hostels").delete().eq("id", id);
+    if (error) toast.error(error.message); else refresh();
+  }
+  return (
+    <div className="mt-4 grid gap-4">
+      <p className="text-sm text-muted-foreground">Hostels shown in the booking dropdown for each campus. Students can still type a hostel that is not listed.</p>
+      <div className="flex flex-wrap gap-2">
+        <select value={campusId} onChange={(e) => setCampusId(e.target.value)} className="h-9 rounded-md border border-input bg-background px-3 text-sm">
+          {CAMPUSES.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="New hostel name" maxLength={80} className="w-64" />
+        <Button onClick={add}>Add hostel</Button>
+      </div>
+      {q.data?.length === 0 ? <p className="text-sm text-muted-foreground">No hostels added for this campus yet.</p> : null}
+      <ul className="divide-y divide-border rounded-lg border border-border">
+        {q.data?.map((h) => (
+          <li key={h.id} className="flex flex-wrap items-center gap-2 p-3">
+            <Input defaultValue={h.name} className="w-64" onBlur={(e) => e.target.value.trim() !== h.name && patch(h.id, { name: e.target.value.trim() })} />
+            {!h.active ? <Badge variant="secondary">Hidden</Badge> : null}
+            <Button size="sm" variant="outline" onClick={() => patch(h.id, { active: !h.active })}>{h.active ? "Hide" : "Show"}</Button>
+            <Button size="sm" variant="outline" onClick={() => remove(h.id)}>Delete</Button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function WaitlistPanel() {
+  const q = useQuery({
+    queryKey: ["admin-waitlist"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("waitlist_interests").select("id, service, name, contact, university, campus, created_at").order("created_at", { ascending: false }).limit(500);
+      if (error) throw error;
+      return data;
+    },
+  });
+  const counts: Record<string, number> = {};
+  for (const r of q.data ?? []) { const k = `${r.campus ?? "Unknown campus"} | ${r.service}`; counts[k] = (counts[k] ?? 0) + 1; }
+  return (
+    <div className="mt-4 grid gap-4">
+      <div className="flex flex-wrap gap-2">
+        {Object.entries(counts).map(([k, n]) => <Badge key={k} variant="secondary">{k}: {n}</Badge>)}
+      </div>
+      {q.data?.length === 0 ? <p className="text-sm text-muted-foreground">No waitlist sign-ups yet.</p> : null}
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="text-left text-muted-foreground"><tr><th className="p-2">Date</th><th className="p-2">Service</th><th className="p-2">Name</th><th className="p-2">Contact</th><th className="p-2">University</th><th className="p-2">Campus</th></tr></thead>
+          <tbody>
+            {q.data?.map((r) => (
+              <tr key={r.id} className="border-t border-border">
+                <td className="p-2">{r.created_at.slice(0, 10)}</td><td className="p-2">{r.service}</td><td className="p-2">{r.name}</td><td className="p-2">{r.contact}</td><td className="p-2">{r.university ?? "-"}</td><td className="p-2">{r.campus ?? "-"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

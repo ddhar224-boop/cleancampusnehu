@@ -2,6 +2,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useCampus } from "@/lib/campus";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +24,7 @@ export function WaitlistForm({ service, serviceLabel }: { service: string; servi
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
+  const { campus } = useCampus();
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,6 +38,8 @@ export function WaitlistForm({ service, serviceLabel }: { service: string; servi
     const { error } = await supabase.from("waitlist_interests").insert({
       service,
       ...parsed.data,
+      university: campus.university,
+      campus: campus.name,
       user_id: u.user?.id ?? null,
     });
     setBusy(false);
@@ -69,7 +73,7 @@ export function WaitlistForm({ service, serviceLabel }: { service: string; servi
             <DialogHeader>
               <DialogTitle>Get notified: {serviceLabel}</DialogTitle>
               <DialogDescription>
-                Leave your details and we will tell you the moment {serviceLabel} goes live. No spam, one message.
+                Leave your details and we will tell you the moment {serviceLabel} goes live. No spam, one message. Campus: {campus.name}.
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={submit} className="mt-2 grid gap-4">

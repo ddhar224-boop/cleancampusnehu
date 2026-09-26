@@ -11,6 +11,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { rupees } from "@/lib/auth";
 import { CATEGORY_LABELS, EXPRESS_FEE, PICKUP_SLOTS, lineText, servicesQuery } from "@/lib/catalog";
+import { useCampus } from "@/lib/campus";
+import { HostelSelect, OTHER } from "@/components/HostelSelect";
+import { PickupAssistant, type AppliedPlan } from "@/components/PickupAssistant";
 
 export const Route = createFileRoute("/_authenticated/book")({
   head: () => ({
@@ -42,7 +45,12 @@ function Book() {
   });
 
   const [qty, setQty] = useState<Record<string, number>>({});
-  const [location, setLocation] = useState<string | null>(null);
+  const { campus } = useCampus();
+  const [hostelChoice, setHostelChoice] = useState<string | null>(null);
+  const [hostelCustom, setHostelCustom] = useState<string | null>(null);
+  const [room, setRoom] = useState<string | null>(null);
+  const [deliveryDate, setDeliveryDate] = useState(todayPlus(3));
+  const [deliverySlot, setDeliverySlot] = useState(PICKUP_SLOTS[3]!);
   const [date, setDate] = useState(todayPlus(1));
   const [slot, setSlot] = useState(PICKUP_SLOTS[3]!);
   const [speed, setSpeed] = useState<"standard" | "express">("standard");
@@ -50,8 +58,23 @@ function Book() {
   const [notes, setNotes] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const defaultLocation = profile.data ? [profile.data.hostel, profile.data.room && `Room ${profile.data.room}`].filter(Boolean).join(", ") : "";
-  const loc = location ?? defaultLocation;
+  const profileHostel = profile.data?.hostel ?? "";
+  const hChoice = hostelChoice ?? (profileHostel ? OTHER : "");
+  const hCustom = hostelCustom ?? profileHostel;
+  const roomNo = room ?? profile.data?.room ?? "";
+  const hostelName = (hChoice === OTHER ? hCustom : hChoice).trim();
+  const loc = [hostelName, roomNo.trim() && `Room ${roomNo.trim()}`, campus.name].filter(Boolean).join(", ");
+
+  function applyPlan(p: AppliedPlan) {
+    const byName = new Map((services.data ?? []).map((s) => [s.name.toLowerCase(), s.id]));
+    const next: Record<string, number> = {};
+    for (const i of p.items) { const id = byName.get(i.service.toLowerCase()); if (id) next[id] = i.quantity; }
+    setQty(next);
+    if (p.pickup_slot) setSlot(p.pickup_slot);
+    if (p.delivery_slot) setDeliverySlot(p.delivery_slot);
+    setSpeed(p.delivery_speed);
+    if (p.notes) setNotes(p.notes);
+  }
 
   const lines = useMemo(
     () => (services.data ?? []).filter((s) => (qty[s.id] ?? 0) > 0).map((s) => ({ ...s, q: qty[s.id] ?? 0, total: Math.round(Number(s.price) * (qty[s.id] ?? 0) * 100) / 100 })),
@@ -84,7 +107,8 @@ function Book() {
       if (l.unit !== "kg" && !Number.isInteger(l.q)) { toast.error(`${l.name} is priced per piece`); return; }
       if (l.q <= 0) { toast.error(`Enter a positive amount for ${l.name}`); return; }
     }
-    if (loc.trim().length < 2) { toast.error("Enter your pickup location"); return; }
+    if (hostelName.length < 2) { toast.error("Select or type your hostel"); return; }
+    if (deliveryDate < date) { toast.error("Delivery date must be on or after the pickup date"); return; }
     setBusy(true);
     const { data, error } = await supabase.rpc("place_order", {
       _items: lines.map((l) => ({ service_id: l.id, quantity: l.q })),
@@ -99,6 +123,8 @@ function Book() {
     if (error) { toast.error(error.message); return; }
     const row = Array.isArray(data) ? data[0] : data;
     if (!row) { toast.error("Could not place order"); return; }
+    const { error: dErr } = await supabase.rpc("set_order_delivery", { _order_id: row.id, _delivery_date: deliveryDate, _delivery_slot: deliverySlot });
+    if (dErr) toast.error(`Order placed, but delivery time not saved: ${dErr.message}`);
     toast.success(`Order ${row.code} placed`);
     navigate({ to: "/orders/$id", params: { id: row.id } });
   }
@@ -110,6 +136,8 @@ function Book() {
           <h1 className="text-3xl font-bold">Book a pickup</h1>
           <p className="mt-2 text-sm text-muted-foreground">Clothes are charged per piece. Only blankets are charged by weight, confirmed on our scale at pickup.</p>
         </div>
+
+        <PickupAssistant onApply={applyPlan} />
 
         <section>
           <h2 className="font-semibold">1. Clothes and linen: price per piece</h2>
@@ -165,19 +193,34 @@ function Book() {
         ) : null}
 
         <section className="grid gap-4">
-          <h2 className="font-semibold">3. Pickup</h2>
-          <div className="grid gap-2">
-            <Label htmlFor="loc">Pickup location</Label>
-            <Input id="loc" value={loc} onChange={(e) => setLocation(e.target.value)} placeholder="Hostel name, room number" maxLength={200} />
+          <h2 className="font-semibold">3. Pickup and delivery time</h2>
+          <p className="text-sm text-muted-foreground">Pickup at <span className="font-medium text-foreground">{campus.name}</span>. Change campus from the top of the page.</p>
+          {!campus.live ? <p className="rounded-md border border-accent/40 bg-accent/10 p-3 text-sm">We are not picking up at {campus.name} yet. You can still book, but only {"NEHU Tura Campus"} orders are served right now.</p> : null}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <HostelSelect campusId={campus.id} choice={hChoice} custom={hCustom} onChoice={setHostelChoice} onCustom={setHostelCustom} />
+            <div className="grid gap-2">
+              <Label htmlFor="room">Room number</Label>
+              <Input id="room" value={roomNo} onChange={(e) => setRoom(e.target.value)} placeholder="For example 204" maxLength={20} />
+            </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="grid gap-2">
-              <Label htmlFor="date">Date</Label>
+              <Label htmlFor="date">Pickup date</Label>
               <Input id="date" type="date" value={date} min={todayPlus(0)} max={todayPlus(14)} onChange={(e) => setDate(e.target.value)} />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="slot">Time slot</Label>
+              <Label htmlFor="slot">Pickup time</Label>
               <select id="slot" value={slot} onChange={(e) => setSlot(e.target.value)} className="h-9 rounded-md border border-input bg-background px-3 text-sm">
+                {PICKUP_SLOTS.map((s) => <option key={s}>{s}</option>)}
+              </select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="ddate">Preferred delivery date</Label>
+              <Input id="ddate" type="date" value={deliveryDate} min={date} max={todayPlus(28)} onChange={(e) => setDeliveryDate(e.target.value)} />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="dslot">Preferred delivery time</Label>
+              <select id="dslot" value={deliverySlot} onChange={(e) => setDeliverySlot(e.target.value)} className="h-9 rounded-md border border-input bg-background px-3 text-sm">
                 {PICKUP_SLOTS.map((s) => <option key={s}>{s}</option>)}
               </select>
             </div>
@@ -185,7 +228,7 @@ function Book() {
         </section>
 
         <section className="grid gap-4">
-          <h2 className="font-semibold">4. Delivery and payment</h2>
+          <h2 className="font-semibold">4. Speed and payment</h2>
           <div className="grid gap-3 sm:grid-cols-2">
             <Choice checked={speed === "standard"} onClick={() => setSpeed("standard")} title="Standard" body="Back within the service turnaround. Free." />
             <Choice checked={speed === "express"} onClick={() => setSpeed("express")} title="Express" body={`Jumps the queue. ${rupees(EXPRESS_FEE)} extra.`} />

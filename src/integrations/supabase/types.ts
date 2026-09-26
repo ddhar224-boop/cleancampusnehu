@@ -47,6 +47,30 @@ export type Database = {
         }
         Relationships: []
       }
+      hostels: {
+        Row: {
+          active: boolean
+          campus_id: string
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          active?: boolean
+          campus_id: string
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          active?: boolean
+          campus_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       order_events: {
         Row: {
           created_at: string
@@ -134,6 +158,8 @@ export type Database = {
         Row: {
           code: string
           created_at: string
+          delivery_date: string | null
+          delivery_slot: string | null
           delivery_speed: string
           express_fee: number
           id: string
@@ -152,6 +178,8 @@ export type Database = {
         Insert: {
           code?: string
           created_at?: string
+          delivery_date?: string | null
+          delivery_slot?: string | null
           delivery_speed?: string
           express_fee?: number
           id?: string
@@ -170,6 +198,8 @@ export type Database = {
         Update: {
           code?: string
           created_at?: string
+          delivery_date?: string | null
+          delivery_slot?: string | null
           delivery_speed?: string
           express_fee?: number
           id?: string
@@ -389,27 +419,33 @@ export type Database = {
       }
       waitlist_interests: {
         Row: {
+          campus: string | null
           contact: string
           created_at: string
           id: string
           name: string
           service: string
+          university: string | null
           user_id: string | null
         }
         Insert: {
+          campus?: string | null
           contact: string
           created_at?: string
           id?: string
           name: string
           service: string
+          university?: string | null
           user_id?: string | null
         }
         Update: {
+          campus?: string | null
           contact?: string
           created_at?: string
           id?: string
           name?: string
           service?: string
+          university?: string | null
           user_id?: string | null
         }
         Relationships: []
@@ -442,6 +478,14 @@ export type Database = {
           code: string
           id: string
         }[]
+      }
+      set_order_delivery: {
+        Args: {
+          _delivery_date: string
+          _delivery_slot: string
+          _order_id: string
+        }
+        Returns: undefined
       }
       track_order: {
         Args: { _code: string }
