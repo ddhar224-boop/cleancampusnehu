@@ -422,8 +422,11 @@ export type Database = {
           campus: string | null
           contact: string
           created_at: string
+          delivery_date: string | null
+          hostel: string | null
           id: string
           name: string
+          pickup_time: string | null
           service: string
           university: string | null
           user_id: string | null
@@ -432,8 +435,11 @@ export type Database = {
           campus?: string | null
           contact: string
           created_at?: string
+          delivery_date?: string | null
+          hostel?: string | null
           id?: string
           name: string
+          pickup_time?: string | null
           service: string
           university?: string | null
           user_id?: string | null
@@ -442,8 +448,11 @@ export type Database = {
           campus?: string | null
           contact?: string
           created_at?: string
+          delivery_date?: string | null
+          hostel?: string | null
           id?: string
           name?: string
+          pickup_time?: string | null
           service?: string
           university?: string | null
           user_id?: string | null
