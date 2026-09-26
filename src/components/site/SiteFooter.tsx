@@ -35,6 +35,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/care-guide" className="hover:text-ink-foreground">
+                Care guide
+              </Link>
+            </li>
+            <li>
               <Link to="/track" className="hover:text-ink-foreground">
                 Track an order
               </Link>

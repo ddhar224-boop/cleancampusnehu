@@ -11,6 +11,7 @@ const NAV = [
   { to: "/services", label: "Services" },
   { to: "/plans", label: "Plans" },
   { to: "/how-it-works", label: "How It Works" },
+  { to: "/care-guide", label: "Care Guide" },
   { to: "/track", label: "Track Order" },
   { to: "/about", label: "About" },
   { to: "/faq", label: "FAQ" },
