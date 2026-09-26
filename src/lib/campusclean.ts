@@ -142,15 +142,15 @@ export const FAQS = [
   },
   {
     q: "How is my laundry kept separate from everyone else's?",
-    a: "Every order gets a unique ID like CC-2026-000001 and a QR code. Staff scan that code at pickup, intake, each processing stage and delivery, so your bag is tracked the whole way.",
+    a: "Every order gets a unique ID like CC-2026-000001 and a tag on your bag. Staff update its status at pickup, each processing stage and delivery, and you can follow it from your account.",
   },
   {
     q: "How do I pay?",
-    a: "Online payment (UPI, cards, net banking) is being set up. Until the payment gateway is live, orders are handled as pay-on-delivery, we will never show a fake successful payment.",
+    a: "In cash or by UPI when your clothes are delivered. We do not take online card payments yet.",
   },
   {
     q: "What if something is lost or damaged?",
-    a: "You can raise a claim from your order page. Every claim is reviewed by a manager and moves through Submitted, Under Review, Approved or Rejected, and Resolved, with the outcome recorded.",
+    a: "Email us within 48 hours of delivery with your order ID and photos. A manager reviews every report, and confirmed losses are compensated as set out in our Terms.",
   },
   {
     q: "Can I give special instructions?",
@@ -158,11 +158,11 @@ export const FAQS = [
   },
   {
     q: "What does it cost?",
-    a: "Indicative launch pricing starts at ₹60 per kg for a plain wash. Final rates are set per campus before launch and always shown in full before you confirm an order.",
+    a: "Wash and fold starts at ₹60 per kg. Pickup and standard delivery are free. You see the full bill before you confirm, and it is adjusted only if the weight on our scale differs from your estimate.",
   },
   {
     q: "Do you offer plans for regular laundry?",
-    a: "Weekly, monthly and hostel saver plans are part of the roadmap. Rewards and referral points are being built in from the start.",
+    a: "Yes. Weekly, monthly and semester plans include a kg allowance and pickups. You pay at your first pickup and the plan starts that day.",
   },
 ];
 
