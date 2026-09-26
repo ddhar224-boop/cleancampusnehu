@@ -54,6 +54,7 @@ function Admin() {
           {isAdmin ? <TabsTrigger value="prices">Prices</TabsTrigger> : null}
           {isAdmin ? <TabsTrigger value="hostels">Hostels</TabsTrigger> : null}
           {isAdmin ? <TabsTrigger value="waitlist">Waitlist</TabsTrigger> : null}
+          {isAdmin ? <TabsTrigger value="hostel-pickup">Hostel Pickup</TabsTrigger> : null}
         </TabsList>
         <TabsContent value="orders"><OrdersPanel /></TabsContent>
         {isAdmin ? <TabsContent value="subs"><SubsPanel /></TabsContent> : null}
@@ -61,6 +62,7 @@ function Admin() {
         {isAdmin ? <TabsContent value="prices"><PricesPanel /></TabsContent> : null}
         {isAdmin ? <TabsContent value="hostels"><HostelsPanel /></TabsContent> : null}
         {isAdmin ? <TabsContent value="waitlist"><WaitlistPanel /></TabsContent> : null}
+        {isAdmin ? <TabsContent value="hostel-pickup"><HostelPickupPanel /></TabsContent> : null}
       </Tabs>
     </div>
   );
@@ -361,6 +363,52 @@ function WaitlistPanel() {
             {q.data?.map((r) => (
               <tr key={r.id} className="border-t border-border">
                 <td className="p-2">{r.created_at.slice(0, 10)}</td><td className="p-2">{r.service}</td><td className="p-2">{r.name}</td><td className="p-2">{r.contact}</td><td className="p-2">{r.university ?? "-"}</td><td className="p-2">{r.campus ?? "-"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function HostelPickupPanel() {
+  const q = useQuery({
+    queryKey: ["admin-hostel-pickup"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("waitlist_interests")
+        .select("id, service, name, contact, university, campus, hostel, pickup_time, delivery_date, created_at")
+        .order("created_at", { ascending: false })
+        .limit(500);
+      if (error) throw error;
+      return data;
+    },
+  });
+  const counts: Record<string, number> = {};
+  for (const r of q.data ?? []) { const k = r.campus ?? "Unknown campus"; counts[k] = (counts[k] ?? 0) + 1; }
+  return (
+    <div className="mt-4 grid gap-4">
+      <p className="text-sm text-muted-foreground">Every waitlist sign-up with where the student lives and when they want pickup and delivery.</p>
+      <div className="flex flex-wrap gap-2">
+        {Object.entries(counts).map(([k, n]) => <Badge key={k} variant="secondary">{k}: {n}</Badge>)}
+      </div>
+      {q.data?.length === 0 ? <p className="text-sm text-muted-foreground">No waitlist sign-ups yet.</p> : null}
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="text-left text-muted-foreground"><tr><th className="p-2">Date</th><th className="p-2">Service</th><th className="p-2">Name</th><th className="p-2">Contact</th><th className="p-2">University</th><th className="p-2">Campus</th><th className="p-2">Hostel</th><th className="p-2">Pickup time</th><th className="p-2">Delivery date</th></tr></thead>
+          <tbody>
+            {q.data?.map((r) => (
+              <tr key={r.id} className="border-t border-border">
+                <td className="p-2">{r.created_at.slice(0, 10)}</td>
+                <td className="p-2">{r.service}</td>
+                <td className="p-2">{r.name}</td>
+                <td className="p-2">{r.contact}</td>
+                <td className="p-2">{r.university ?? "-"}</td>
+                <td className="p-2">{r.campus ?? "-"}</td>
+                <td className="p-2">{r.hostel ?? "-"}</td>
+                <td className="p-2">{r.pickup_time ?? "-"}</td>
+                <td className="p-2">{r.delivery_date ?? "-"}</td>
               </tr>
             ))}
           </tbody>
