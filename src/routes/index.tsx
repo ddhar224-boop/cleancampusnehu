@@ -27,6 +27,7 @@ import { STEPS, FAQS, BRAND } from "@/lib/campusclean";
 import { servicesQuery, plansQuery, CATEGORY_LABELS } from "@/lib/catalog";
 import { rupees } from "@/lib/auth";
 import { WaitlistForm } from "@/components/WaitlistForm";
+import { useCampus } from "@/lib/campus";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -55,6 +56,7 @@ function Home() {
   const plans = useQuery(plansQuery);
   const navigate = useNavigate();
   const [code, setCode] = useState("");
+  const { campus } = useCampus();
 
   const minPrice: Record<string, number> = {};
   for (const s of services.data ?? []) {
@@ -69,7 +71,10 @@ function Home() {
       <div className="grid grid-cols-1 gap-4 md:auto-rows-[160px] md:grid-cols-4">
         <div className="flex flex-col justify-between rounded-2xl bg-ink p-8 text-ink-foreground md:col-span-3 md:row-span-2 sm:p-10">
           <div>
-            <p className="text-sm font-medium text-ink-foreground/60">Laundry pickup at {BRAND.launchCampus}</p>
+            <p className="text-sm font-medium text-ink-foreground/60">
+              Laundry pickup at {campus.name}
+              {!campus.live ? <span className="ml-2 rounded bg-accent/20 px-2 py-0.5 text-xs font-bold text-accent">Coming soon here</span> : null}
+            </p>
             <h1 className="mt-4 max-w-2xl text-4xl font-extrabold leading-[1.08] sm:text-6xl">
               <span className="text-primary-soft">Dhulai</span> hum karenge, <span className="text-accent">chill</span> aap karo.
             </h1>
