@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { rupees, useRoles } from "@/lib/auth";
-import { STATUS_FLOW, STATUS_LABELS, unitLabel } from "@/lib/catalog";
+import { useState } from "react";
+import { CATEGORY_LABELS, STATUS_FLOW, STATUS_LABELS } from "@/lib/catalog";
 import type { Database } from "@/integrations/supabase/types";
 
 type OrderStatus = Database["public"]["Enums"]["order_status"];
