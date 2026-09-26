@@ -6,7 +6,7 @@ import { BRAND } from "@/lib/campusclean";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About CampusClean — Campus Laundry from Northeast India" },
+      { title: "About CampusClean, Campus Laundry from Northeast India" },
       {
         name: "description",
         content:
@@ -37,7 +37,7 @@ function AboutPage() {
           {[
             {
               t: "Where we start",
-              b: `${BRAND.launchCampus}. One campus, done properly — reliable slots, honest pricing, tracked orders.`,
+              b: `${BRAND.launchCampus}. One campus, done properly, reliable slots, honest pricing, tracked orders.`,
             },
             {
               t: "Where we go",
@@ -45,7 +45,7 @@ function AboutPage() {
             },
             {
               t: "Who it is for",
-              b: "Students and university staff. Registration uses your mobile number and Student or Staff ID — no university email or university database access required.",
+              b: "Students and university staff. Registration uses your mobile number and Student or Staff ID, no university email or university database access required.",
             },
             {
               t: "How we handle trust",
@@ -64,7 +64,7 @@ function AboutPage() {
         <SectionHeading
           eyebrow="Contact"
           title="Talk to us"
-          body="Campus requests, hostel tie-ups, feedback or questions — we read everything."
+          body="Campus requests, hostel tie-ups, feedback or questions, we read everything."
         />
         <p className="mt-6 font-display text-2xl font-bold text-primary">{BRAND.email}</p>
         <div className="mt-8 flex flex-wrap gap-3">

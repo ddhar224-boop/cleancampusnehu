@@ -10,13 +10,13 @@ import { TRACK_STAGES } from "@/lib/campusclean";
 export const Route = createFileRoute("/track")({
   head: () => ({
     meta: [
-      { title: "Track Your Laundry — CampusClean" },
+      { title: "Track Your Laundry, CampusClean" },
       {
         name: "description",
         content:
           "Enter your CampusClean order ID to follow your laundry through pickup, washing, ironing, quality check and doorstep delivery.",
       },
-      { property: "og:title", content: "Track Your Laundry — CampusClean" },
+      { property: "og:title", content: "Track Your Laundry, CampusClean" },
       {
         property: "og:description",
         content: "Twelve tracked stages, each with a timestamp, for every CampusClean order.",

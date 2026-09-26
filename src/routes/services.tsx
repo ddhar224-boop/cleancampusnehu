@@ -8,13 +8,13 @@ import { SERVICES } from "@/lib/campusclean";
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Laundry Services — CampusClean" },
+      { title: "Laundry Services, CampusClean" },
       {
         name: "description",
         content:
           "Wash, dry, iron, express, delicate care, bedding and shoe cleaning for university students and staff, priced per kg, per item or fixed.",
       },
-      { property: "og:title", content: "Laundry Services — CampusClean" },
+      { property: "og:title", content: "Laundry Services, CampusClean" },
       {
         property: "og:description",
         content: "Every CampusClean service, what it includes, and indicative launch pricing.",
@@ -32,7 +32,7 @@ function ServicesPage() {
       <SectionHeading
         eyebrow="Our Services"
         title="Everything we clean"
-        body="Each service is configured per campus by our team — weight based, item based or fixed price. Prices below are indicative for launch."
+        body="Each service is configured per campus by our team, weight based, item based or fixed price. Prices below are indicative for launch."
       />
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {SERVICES.map((s) => (

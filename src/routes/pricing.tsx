@@ -15,7 +15,7 @@ import { SERVICES } from "@/lib/campusclean";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — CampusClean Campus Laundry" },
+      { title: "Pricing, CampusClean Campus Laundry" },
       {
         name: "description",
         content:
@@ -84,7 +84,7 @@ function PricingPage() {
             },
             {
               t: "Payments",
-              b: "UPI, cards and net banking are being set up. Until the gateway is live, orders are pay-on-delivery — we never show a fake successful payment.",
+              b: "UPI, cards and net banking are being set up. Until the gateway is live, orders are pay-on-delivery, we never show a fake successful payment.",
             },
           ].map((x) => (
             <div key={x.t} className="rounded-2xl border border-border bg-card p-6">

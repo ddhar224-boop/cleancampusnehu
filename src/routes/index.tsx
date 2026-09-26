@@ -29,13 +29,13 @@ import heroImage from "@/assets/hero-campus-laundry.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "CampusClean — Clean Clothes. Less Hassle." },
+      { title: "CampusClean, Clean Clothes. Less Hassle." },
       {
         name: "description",
         content:
           "CampusClean brings reliable laundry pickup, professional cleaning and doorstep delivery to university life. Launching at NEHU Tura Campus.",
       },
-      { property: "og:title", content: "CampusClean — Your Campus Laundry, Reimagined." },
+      { property: "og:title", content: "CampusClean, Your Campus Laundry, Reimagined." },
       {
         property: "og:description",
         content:
@@ -188,7 +188,7 @@ function Home() {
         <SectionHeading
           eyebrow="Our Services"
           title="Pick exactly the service you need"
-          body="Weight based, item based or fixed price — configured per campus before launch."
+          body="Weight based, item based or fixed price, configured per campus before launch."
         />
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.slice(0, 6).map((s) => (
@@ -224,7 +224,7 @@ function Home() {
         <SectionHeading
           eyebrow="Transparent Pricing"
           title="You see every rupee before you confirm"
-          body="Laundry charges, pickup, delivery, express fee, discounts and total — itemised on the order summary."
+          body="Laundry charges, pickup, delivery, express fee, discounts and total, itemised on the order summary."
         />
         <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_1.1fr] lg:items-start">
           <Card className="shadow-lift">
@@ -442,7 +442,7 @@ function Home() {
         <SectionHeading
           eyebrow="Student Voices"
           title="Sample feedback"
-          body="CampusClean has not launched yet, so these are illustrative examples written by our own team — not real customer reviews. Real, verified reviews will replace them after launch."
+          body="CampusClean has not launched yet, so these are illustrative examples written by our own team, not real customer reviews. Real, verified reviews will replace them after launch."
         />
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {[
@@ -517,7 +517,7 @@ function Home() {
                 <Bell className="size-4 text-primary" /> Contact CampusClean
               </p>
               <p className="mt-4 text-sm text-ink-foreground/70">
-                Questions, campus requests or partnership ideas — write to us.
+                Questions, campus requests or partnership ideas, write to us.
               </p>
               <p className="mt-4 font-display text-lg font-semibold text-ink-foreground">
                 {BRAND.email}

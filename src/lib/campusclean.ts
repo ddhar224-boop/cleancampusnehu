@@ -34,7 +34,7 @@ export const SERVICES: Service[] = [
   {
     slug: "wash-dry",
     name: "Wash + Dry",
-    description: "Washed and fully machine dried — no hunting for space on the hostel line.",
+    description: "Washed and fully machine dried, no hunting for space on the hostel line.",
     unit: "per kg",
     indicativePrice: "₹80",
     turnaround: "48 hours",
@@ -134,7 +134,7 @@ export const TRACK_STAGES = [
 export const FAQS = [
   {
     q: "Where does CampusClean operate right now?",
-    a: "We are launching at NEHU Tura Campus first. NEHU Shillong and other universities across Northeast India follow as we grow. You can register from any campus — you will be told when we reach yours.",
+    a: "We are launching at NEHU Tura Campus first. NEHU Shillong and other universities across Northeast India follow as we grow. You can register from any campus, you will be told when we reach yours.",
   },
   {
     q: "Do I need a university email address?",
@@ -146,11 +146,11 @@ export const FAQS = [
   },
   {
     q: "How do I pay?",
-    a: "Online payment (UPI, cards, net banking) is being set up. Until the payment gateway is live, orders are handled as pay-on-delivery — we will never show a fake successful payment.",
+    a: "Online payment (UPI, cards, net banking) is being set up. Until the payment gateway is live, orders are handled as pay-on-delivery, we will never show a fake successful payment.",
   },
   {
     q: "What if something is lost or damaged?",
-    a: "You can raise a claim from your order page. Every claim is reviewed by a manager and moves through Submitted, Under Review, Approved or Rejected, and Resolved — with the outcome recorded.",
+    a: "You can raise a claim from your order page. Every claim is reviewed by a manager and moves through Submitted, Under Review, Approved or Rejected, and Resolved, with the outcome recorded.",
   },
   {
     q: "Can I give special instructions?",

@@ -6,13 +6,13 @@ import { Section, SectionHeading } from "@/components/site/Section";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Login or Register — CampusClean" },
+      { title: "Login or Register, CampusClean" },
       {
         name: "description",
         content:
           "Create your CampusClean account with your mobile number and Student or Staff ID to book campus laundry pickups.",
       },
-      { property: "og:title", content: "Login or Register — CampusClean" },
+      { property: "og:title", content: "Login or Register, CampusClean" },
       {
         property: "og:description",
         content: "Accounts for students and university staff, verified by campus ID.",
@@ -31,7 +31,7 @@ function AuthPage() {
         <SectionHeading
           eyebrow="Accounts"
           title="Sign in to CampusClean"
-          body="Accounts use your mobile number and your Student or Staff ID — no university email needed."
+          body="Accounts use your mobile number and your Student or Staff ID, no university email needed."
         />
         <Alert className="mt-8">
           <AlertTitle>Sign-up opens next</AlertTitle>

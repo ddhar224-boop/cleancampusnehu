@@ -12,7 +12,7 @@ import { FAQS } from "@/lib/campusclean";
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "FAQ — CampusClean Laundry for Students" },
+      { title: "FAQ, CampusClean Laundry for Students" },
       {
         name: "description",
         content:
