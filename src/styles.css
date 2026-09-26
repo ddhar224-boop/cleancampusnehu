@@ -168,21 +168,9 @@
   }
 }
 
-@utility surface-gradient {
-  background-color: var(--color-secondary);
-}
-
-@utility hero-gradient {
-  background-color: var(--color-background);
-}
-
 @utility ink-panel {
   background-color: var(--color-ink);
   color: var(--color-ink-foreground);
-}
-
-@utility text-gradient {
-  color: var(--color-primary);
 }
 
 @utility container-page {

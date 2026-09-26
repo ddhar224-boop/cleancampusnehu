@@ -56,7 +56,7 @@ export function SiteHeader() {
       <div className="container-page grid h-18 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 lg:flex lg:justify-between">
         <div className="flex min-w-0 items-center gap-3">
           <Logo />
-          <CampusPicker />
+          <div className="hidden sm:block"><CampusPicker /></div>
         </div>
         <nav className="hidden items-center gap-0.5 lg:flex">
           {NAV.map((item) => (
@@ -82,6 +82,7 @@ export function SiteHeader() {
           {open ? <X className="size-5" /> : <Menu className="size-5" />}
         </Button>
       </div>
+      <div className="container-page pb-2 sm:hidden"><CampusPicker /></div>
       {open ? (
         <div className="border-t border-border bg-background lg:hidden">
           <div className="container-page flex flex-col gap-1 py-3">
