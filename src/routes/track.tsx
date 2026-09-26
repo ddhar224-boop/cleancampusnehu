@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { STATUS_FLOW, STATUS_LABELS } from "@/lib/catalog";
 
 export const Route = createFileRoute("/track")({
-  validateSearch: (s: Record<string, unknown>): { code?: string } => (typeof s.code === "string" && s.code ? { code: s.code.slice(0, 20) } : {}),
+  validateSearch: (s: Record<string, unknown>): { code?: string } => (typeof s['code'] === "string" && s['code'] ? { code: (s['code'] as string).slice(0, 20) } : {}),
   head: () => ({
     meta: [
       { title: "Track an order | CampusClean" },
